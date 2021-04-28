@@ -1,0 +1,18 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="col-md-10">
+  <div class="card">
+    <img style="max-height: 300px;" class="card-img-top" src="{{ object.photo.url }}" alt="{{ object.photo }}">
+    <div class="card-body">
+      <h3 class="card-title">{{ object.name }}</h3>
+      <h5 class="class="card-title">{{ object.lecture.name }}</h5>
+      <p class="card-text">{{ object.description }}</p>
+      <a class="btn btn-primary glow" href="{% url 'lesson:lecture_update' object.id %}">edit</a>
+      <a class="btn btn-primary glow" href="{% url 'lesson:lesson_detail' object.lecture.id %}">Zurück</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

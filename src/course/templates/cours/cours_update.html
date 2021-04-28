@@ -1,0 +1,35 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+
+<div class="col-md-12">
+    <div class="row">
+      <div class="card">
+        <img src="{{ object.img.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ object.name }}</h5>
+          <p class="card-text">{{ object.description }}</p>
+          <p class="card-text"><small class="text-muted">Erstellt am:{{ object.create }} | Update am:{{ object.update }}</small></p>
+
+          <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <input type=hidden name="owner" value="{{ object.owner_id }}">
+              <input class="btn btn btn-primary glow" type="submit" value="{{ btn_title }}">
+          </form>
+
+        </div>
+      </div>
+
+      <div class="card text-end">
+        <div class="card-body">
+          <a class="btn btn-light glow" href="{% url 'course:course_material' course.id %}">Übersicht</a>
+          <a class="btn btn-light glow" href="{% url 'course:course_material' course.id %}">Detailansicht</a>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+{% endblock %}

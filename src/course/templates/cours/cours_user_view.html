@@ -1,0 +1,112 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+
+
+    <div class="col-md-12">
+
+      {% if messages %}
+        <div class="alert alert-success" role="alert">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="card">
+        <img src="{{ course.img.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.name }}</h5>
+          <p>{% if course.descriptione == True %} {% else %} {{ course.description|truncatewords:30 }} {% endif %}</p>
+          <a href="{% url 'course:course_update' course.id %}" class="btn btn-light glow">{{ course.name }} edit</a>
+          <a href="{% url 'course:course_deletet' course.id %}" class="btn btn-danger glow">{{ course.name }} Delete</a>
+        </div>
+        <div class="card-footer text-muted">
+          <small>Erstellt von:{{ course.owner }} | Erstellt am: {{ course.update }}</small>
+        </div>
+      </div>
+
+      <div class="mt-n2"></div>
+
+      <div class="card">
+        <div class="card-body">
+          <form method="post">{% csrf_token %}
+            <div class="form-group row align-items-center">
+              <div class="col-md-2">
+                {{ categoryform.titel }}
+              </div>
+              <div class="col-md-2">
+                {{ categoryform.order }}
+              </div>
+              <div class="col-md-2">
+                {{ categoryform.description }}
+              </div>
+            </div>
+
+            <input type=hidden name="course" value="{{ course.id }}">
+            <input style="margin-top: 10px;" class="save_content_btn btn btn-primary glow" name="categoryform" type="Submit" value="{{ btn_title }}"/>
+          </form>
+        </div>
+      </div>
+
+      <div class="mt-n1"></div>
+
+      <div class="card">
+        <div class="card-body card-body-padding">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Reinfolge</th>
+                <th scope="col">Öffentlich</th>
+                <th style="float: right;">Barbeiten</th>
+              </tr>
+            </thead>
+
+          {% for course in course.category_set.all %}
+
+              <tbody>
+                <tr class="table-secondary">
+                  <td>
+                    {{ course.titel }} | Order:{{ course.order }}<br>
+                    <small>{{course.description|truncatewords:8}}</small>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td><a href="{% url 'course:category_deletet' course.id %}"><i style="float: right;" class="bx fas fa-trash-alt"></i></a> <a href="{% url 'course:category_update' course.id %}"><i style="float: right; margin-right: 30px;" class="bx fas fa-edit"></i></a></td>
+                </tr>
+                {% for category in course.lesson_set.all %}
+                <tr>
+                  <td>{{ category.name }}</td>
+                  <td>{{ category.order }}</td>
+                  <td>{% if category.is_active == True %} <span class="text-success">ist aktive</span> {% else %} <span class="text-danger">ist daktiviert</span>{% endif %}</td>
+                  <td><a href="{% url 'lesson:lesson_detail' category.id %}"><i style="float: right;" class="bx far fa-eye"></i></a> <a href="{% url 'lesson:lesson_update' category.id %}"><i style="float:right; margin-right: 30px;" class="bx fas fa-edit"></i></a></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                <form method="post">{% csrf_token %}
+                  <td>{{ lessonform.name }}</td>
+                  <td>{{ lessonform.order }}</td>
+                  <td>{{ lessonform.link_url }}</td>
+                  <td><input class="save_content_btn btn btn-primary" name="lessonform" type="Submit" value="{{ btn_title_2 }}"/></td>
+                  <input type=hidden name="category" value="{{ course.id }}">
+                </form>
+                </tr>
+              </tbody>
+
+          {% endfor %}
+          </table>
+        </div><!--card body ./-->
+      </div><!--card ./-->
+
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-1">
+  <div class="card">
+    <div class="card-header">
+      {{  object.name }}
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" action="{% url "lesson:lesson_update" object.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+          <input class="part_btn_save prt-sv btn btn-primary glow" type ="submit" value="Senden"></input>
+      </form>
+    </div>
+  </div>
+  <div class="card text-end">
+    <div class="card-body">
+      <a class="btn btn-light glow" href="{% url 'lesson:lesson_detail' lesson.id %}">{{ lesson.name }} Abbrechen</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

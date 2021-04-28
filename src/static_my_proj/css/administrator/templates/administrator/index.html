@@ -1,0 +1,71 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block content %}
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-title">
+              <h2>Dashboard</h2>
+            </div>
+          </div>
+          
+             <div class="row">
+              <div class="col-md-2">
+                  <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Rezepte</h5>
+                    <p class="card-text">{{ rezepturen_count }}</p>
+                    <a href="{% url 'rezept:rezept_list' %}" class="btn btn-primary">Go somewhere</a>
+                  </div>
+                </div>
+             </div>
+             <div class="col-md-2">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Kommentare</h5>
+                  <p class="card-text">{{ comment_count }}</p>
+                  <a href="{% url 'rezept:comment_list' %}" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+             <div class="card">
+               <div class="card-body">
+                 <h5 class="card-title">Fasern</h5>
+                 <p class="card-text">{{ materialfaser_count }}</p>
+                 <a href="{% url 'rezept:faser_list' %}" class="btn btn-primary">Go somewhere</a>
+               </div>
+             </div>
+           </div>
+           <div class="col-md-2">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Bindemittel</h5>
+                <p class="card-text">{{ bindemittel_count }}</p>
+                <a href="{% url 'rezept:bindemittel_list' %}" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+           <div class="card">
+             <div class="card-body">
+               <h5 class="card-title">Siebe</h5>
+               <p class="card-text">{{ sieb_count }}</p>
+               <a href="{% url 'rezept:sieb_list' %}" class="btn btn-primary">Go somewhere</a>
+             </div>
+           </div>
+         </div>
+          </div>
+
+
+
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<h1>{{ category.titel }}</h1>
+
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ category.titel }}"?</p>
+    <input class="btn btn-outline-secondary" type="submit" value="Confirm">
+</form>
+
+<a href="{% url 'course:course_user' category.course.id %}"> Ansicht</a>
+
+{% endblock %}

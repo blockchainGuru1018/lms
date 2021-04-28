@@ -1,0 +1,26 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="col-md-10">
+  <div class="card">
+    <div class="card-body">
+      <form enctype="multipart/form-data" method="post" action="{% url "lesson:lecture_update"  lecture.id %}">
+          {% csrf_token %}
+          {{ form.as_p}}
+          <input type=hidden name="lecture" value="{{ lecture.id }}">
+          <input class="btn btn-primary glow" type="submit" value="PDF">
+
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+        <a class="btn btn-primary glow" href="{% url 'lesson:lesson_detail' lecture.lecture.id %}"> Ansicht</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

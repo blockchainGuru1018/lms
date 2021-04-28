@@ -1,0 +1,74 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="col-md-10">
+
+  <div class="card">
+    <h5 class="card-header">{{ lesson.name }}</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href="{{ lesson.link_url }}">Video</a></li>
+      <li class="list-group-item">{{ lesson.category }}</li>
+      <li class="list-group-item">{{ lesson.is_active }}</li>
+    </ul>
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">{{ lesson.description }}</p>
+      <a class="btn btn-primary glow" href="{% url 'lesson:lesson_update' lesson.id %}">{{ lesson.name }} Update</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="car-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Dateiname</th>
+            <th scope="col">Bild</th>
+            <th scope="col">Ändern</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lesson in lesson.lecture_set.all %}
+          <tr>
+            <td>
+              {{ lesson.name }}
+              <small>{{ lesson.description }}</small>
+            </td>
+            <td><img width="32" height="32" class="rounded-circle me-2" src="{{ lesson.photo.url }}" alt="card"></td>
+            <td style="width: 40%;">
+              <a href="{% url 'lesson:lecture_detail' lesson.id %}">
+                <i style="float: right;" class="bx far fa-eye"></i>
+              </a>
+              <a href="{% url 'lesson:lecture_update' lesson.id %}">
+                <i style="float:right; margin-right: 30px;" class="bx fas fa-edit"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td style="width:60%;">
+              <form enctype="multipart/form-data" method="post" action="{% url "lesson:lecture_create" %}">
+                  {% csrf_token %}
+                  {{ form_2.as_p}}
+                  <input type=hidden name="lecture" value="{{ lesson.id }}">
+                  <input class="btn btn-primary glow" type="submit" value="PDF">
+              </form>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+   </div>
+  </div>
+
+  <div class="card">
+      <div class="card-body">
+        <a class="btn btn-light glow" href="{% url 'course:course_material' lesson.category.course.id %}">zurück {{ lesson.category.course.name}}</a>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}

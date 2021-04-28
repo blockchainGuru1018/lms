@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    Kurs Löschen
+  </div>
+  <div class="card-body">
+    <form method="post">{% csrf_token %}
+        <p>Sind Sie sicher, dass Sie löschen möchten "{{ object.name }}"?</p>
+        <input class="btn btn-primary glow" type="submit" value="Löschen">
+    </form>
+  </div>
+  <div class="card-footer text-muted">
+    <a href="{% url 'course:course_list' %}">{{ course.name }} Ansicht</a>
+  </div>
+</div>
+
+{% endblock %}
