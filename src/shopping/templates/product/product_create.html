@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+    <div class="col-10">
+      <div class="card">
+        <div class="card-body">
+          {{ form.media }}
+          <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <input type=hidden name="user" value="{{ user.id }}">
+
+              <input class="productcreate btn btn-outline-secondary" type="submit" value="Speicheren">
+          </form>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

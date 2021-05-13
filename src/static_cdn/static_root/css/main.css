@@ -7,6 +7,7 @@ body, .bg-light{
 .wraper {
     margin: 30px 0 0 0;
     padding-right: 30px;
+    padding-left: 30px;
 }
 
 a:active{
@@ -313,7 +314,9 @@ ul.list_ li{
 
 
 
-
+#menu-toggle {
+    margin-left: 30px;
+}
 
 
 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
 
@@ -10,9 +11,9 @@
       <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Start Bootstrap </div>
         <div class="list-group list-group-flush">
-          <a href="{% url 'course:course_list' %}" class="list-group-item list-group-item-action bg-light">Kurse Übersicht</a>
-          <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-          <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+          <a href="{% url 'course:course_list' %}" class="list-group-item list-group-item-action bg-light">Kurse</a>
+          <a href="{% url 'shopping:product_list' %}" class="list-group-item list-group-item-action bg-light">Produkte</a>
+          <a href="{% url 'settings:settings_dashboard' %}" class="list-group-item list-group-item-action bg-light">Settings</a>
           <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
           <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
           <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>

@@ -1,0 +1,141 @@
+{% extends "shop.html" %}
+
+<!--Content-->
+{% block content %}
+
+<style media="screen">
+  .banner {
+   background-image: url("");
+   background-color: #efefef
+   background-repeat: repeat-x;
+   width: 100%;
+   height: 320px;
+   display: block;
+   vertical-align: top;
+   margin: 5px auto;
+}
+</style>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="banner"></div>
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">{{ object.title }}</h1>
+        <p class="card-text">{% autoescape off %}{{ object.description }}{% endautoescape %}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card-body">
+
+          <h4 class="mb-3">Adresse</h4>
+          <form class="needs-validation" action="" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="firstName" class="form-label">Vorname</label>
+                  {{ form.vorname }}
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="lastName" class="form-label">Nachname</label>
+                  {{ form.nachnahme }}
+                </div>
+
+                <div class="col-12">
+                  <label for="username" class="form-label">Unternehmensname</label>
+                    {{ form.firma }}
+                </div>
+
+                <div class="col-12">
+                  <label for="email" class="form-label">Email</label>
+                  {{ form.email }}
+                </div>
+
+                <div class="col-6">
+                  <label for="address" class="form-label">Address</label>
+                  {{ form.adresse }}
+                </div>
+
+                <div class="col-md-6">
+                  <label for="zip" class="form-label">PLZ</label>
+                  {{ form.plz }}
+                </div>
+
+                <div class="col-6">
+                  <label for="address2" class="form-label">Stand</label>
+                  {{ form.stadt }}
+                </div>
+                <div class="col-6">
+                  <label for="address2" class="form-label">Land</label>
+                  {{ form.land }}
+                </div>
+
+                <div class="col-6">
+                  <label for="address2" class="form-label">Uid Nummer</label>
+                  {{ form.tax_nr }}
+                </div>
+
+                <div class="col-6">
+                  <label for="address2" class="form-label">Telefonnummer</label>
+                  {{ form.tel }}
+                </div>
+                <input class="btn btn-outline-secondary" name="order" type="submit" value="Speicheren">
+              </form>
+
+              <form action="{% url 'shopping:shop_success' %}" method="post">
+                  {% csrf_token %}
+                  {{ form_neu.firma }}
+
+                  <input class="btn btn-outline-success" type="submit" value="{{ btn_title }}">
+                  <input type=hidden name="product" value="{{ object.id }}">
+              </form>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-1">
+      <div class="card-body">
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">{{ object.title }}</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <span class="text-muted">{{ object.preis }} €</span>
+          </li>
+
+        <!--  <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Second product</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <span class="text-muted">$8</span>
+          </li>-->
+
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (€)</span>
+            <strong></strong>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+<!--./Content -->

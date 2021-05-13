@@ -39,11 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fontawesome-free',
 
+    "crispy_forms",
+    "crispy_bootstrap5",
+
     'course',
     'lesson',
     'shopping',
     'accounts',
+    'settings',
+    'tinymce',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,3 +153,31 @@ STRIPE_SECRET_KEY = "sk_test_8jUKcqcX0kSvJXgrRmQUVGdk00BMWYxnWX"
 STRIPE_WEBHOOK_SECRET = ""
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+TINYMCE_DEFAULT_CONFIG = {
+
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'theme': 'modern',
+    'plugins': '''
+            textcolor save link image media preview codesample contextmenu
+            table code lists fullscreen  insertdatetime  nonbreaking
+            contextmenu directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists  charmap print  hr
+            anchor pagebreak
+            ''',
+    'toolbar1': '''
+            fullscreen preview bold italic underline | fontselect,
+            fontsizeselect  | forecolor backcolor | alignleft alignright |
+            aligncenter alignjustify | indent outdent | bullist numlist table |
+            | link image media | codesample |
+            ''',
+    'toolbar2': '''
+            visualblocks visualchars |
+            charmap hr pagebreak nonbreaking anchor |  code |
+            ''',
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+    }

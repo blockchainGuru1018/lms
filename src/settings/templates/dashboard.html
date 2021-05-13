@@ -1,0 +1,28 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+
+    {% if settings_count %}
+    {% for object in settings_count %}
+
+    <a href="{% url 'settings:settings_update' object.id %}" class="btn btn-primary">Go somewhere</a>
+    {% endfor %}
+    {% else %}
+    <a href="{% url 'settings:settings_create' %}" class="btn btn-primary">Go somewhere</a>
+    {% endif %}
+
+
+  </div>
+  <div class="card-footer text-muted">
+    2 days ago
+  </div>
+</div>
+
+{% endblock %}

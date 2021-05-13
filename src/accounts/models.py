@@ -58,6 +58,7 @@ class UserProfile(AbstractBaseUser):
     staff       = models.BooleanField(default=False) # staff user non superuser
     admin       = models.BooleanField(default=False) # superuser
     timestamp   = models.DateTimeField(auto_now_add=True)
+    is_teacher  = models.BooleanField(default=False)
     # confirm     = models.BooleanField(default=False)
     # confirmed_date     = models.DateTimeField(default=False)
 

@@ -1,0 +1,19 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-2">
+  <div class="card">
+    <div class="card-body">
+      <form method="post">{% csrf_token %}
+          <p>Bist du Sicher das du <b>"{{ object }}"</b> Löschen möchtest?</p>
+          <input class="btn btn-danger" type="submit" value="Löschen">
+      </form>
+    </div>
+    <div class="card-footer text-muted">
+      <a class="btn btn-secondary" href="">Ansicht</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

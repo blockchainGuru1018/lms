@@ -5,19 +5,27 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.urls import path
 
-from .views import CreateCheckoutSessionView, ProductLandingPageView, CancelView, SuccessView
+from .views import (
+                ProductListView,
+                ProductCreateView,
+                ProductUpdateView,
+                ProductDetailView,
+                ProductDeletelView,
+                ShopListView,
+                ShopDetaileView,
+                ShopCreateView,
+                )
 
 app_name = 'shopping'
 
 urlpatterns = [
-    path('create-checkout-session/<pk>/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
-    path('', ProductLandingPageView.as_view(), name='landing-page'),
-    path('cancel/', CancelView.as_view(), name='cancel'),
-    path('success/', SuccessView.as_view(), name='success'),
-    #url(r'views/$', SignListView.as_view(), name='shopping_cart'),
-    #url(r'^create/$', ShoppingCreateView.as_view(), name='shopping_create'),
-    #url(r'^detaile/(?P<pk>\d+)/$', ShoppingDetailView.as_view(), name='shopping_detaile'),
-    #url(r'^update/(?P<pk>\d+)/$', ShoppingUpdateView.as_view(), name='shopping_update'),
-    #url(r'^delelet/(?P<pk>\d+)/$', ShoppingDeleteView.as_view(), name='shopping_delelet'),
-    #url(r'^user/(?P<pk>\d+)/$', ShoppingCheckoutView.as_view(), name='shopping_user'),
+    path('', ProductListView.as_view(), name='product_list'),
+    path('create/', ProductCreateView.as_view(), name='product_create'),
+    path('update/<pk>/', ProductUpdateView.as_view(), name='product_update'),
+    path('detail/<pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('delete/<pk>/', ProductDeletelView.as_view(), name='product_delete'),
+    path('shop/', ShopListView.as_view(), name='shop_list'),
+    path('shop/produkt/<pk>', ShopDetaileView.as_view(), name='shop_detaile'),
+    #path('shop/order/', ShopCreateView.as_view(), name='shop_create'),
+    path('shop/success/', ShopCreateView.as_view(), name='shop_success'),
 ]

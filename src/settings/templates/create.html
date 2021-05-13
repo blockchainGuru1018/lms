@@ -1,0 +1,35 @@
+{% extends "basic.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+       {{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+       <span aria-hidden="true">&times;</span></button></div>
+    {% endfor %}
+{% endif %}
+
+<div class="col-12">
+  <div class="card">
+    <div class="card-body">
+      {{ form.media }}
+      <form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+          {% crispy form form.helper %}
+          <input type="hidden" name="is_active" value="True" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<style media="screen">
+  .form-row .mce-tinymce {
+    margin-left: 0px;
+}
+
+</style>
+
+{% endblock %}

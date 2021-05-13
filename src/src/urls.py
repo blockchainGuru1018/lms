@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -13,6 +12,8 @@ urlpatterns = [
     path('course/', include('course.urls')),
     path('shopping/', include('shopping.urls')),
     path('lesson/', include('lesson.urls')),
+    path('settings/', include('settings.urls')),
+    path('tinymce/', include('tinymce.urls')),
     path('admin/', admin.site.urls),
 ]
 

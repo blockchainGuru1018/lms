@@ -30,7 +30,8 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.is_active = False # send confirmation email via signals
+        user.is_active = True # send confirmation email via signals
+        user.is_active = True
         # obj = EmailActivation.objects.create(user=user)
         # obj.send_activation_email()
         if commit:
