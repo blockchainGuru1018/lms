@@ -80,13 +80,12 @@ class ProductDeletelView(SuccessMessageMixin, DeleteView):
 
 
 #Shop
-
 class ShopListView(ListView):
     queryset = Product.objects.all()
     model = Product
     template_name = 'shop/list.html'
 
-
+#Stripe payment view
 class ShopCreateView(CreateView):
     form_class = BestellungForm
     #template_name = 'shop/successfully.html'
@@ -102,7 +101,7 @@ class ShopCreateView(CreateView):
 
         return super(ShopCreateView, self).form_valid(form)
 
-
+#Stripe Store important data for billing
 class ShopSuccessView(DetailView):
     queryset = Bestellung.objects.all()
     template_name = 'shop/successfully.html'
