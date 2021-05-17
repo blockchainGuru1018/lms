@@ -81,6 +81,7 @@ class CourseCreateView(CreateView):
 
 class CourseMaterialView(SuccessMessageMixin, View):
     template_name = 'cours/cours_user_view.html'
+    error_message = 'Error saving the Doc, check fields below.'
 
     def get_object(self):
         try:
@@ -107,12 +108,14 @@ class CourseMaterialView(SuccessMessageMixin, View):
             ctxt = {}
 
             if 'categoryform' in request.POST:
-                form = CategoryForm(request.POST, request.FILES)
-                if form.is_valid():
-                    form = form.save(commit=False)
-                    form.save()
+                categoryform = CategoryForm(request.POST, request.FILES)
+                if categoryform.is_valid():
+                    #categoryform = form.save(commit=False)
+                    categoryform.save()
                     #success_message = 'Your name has been changed.'
-                    messages.add_message(request, messages.INFO, 'Hello world.')
+                    messages.add_message(request, messages.INFO, 'wurde erfolgreich erstellt')
+                else:
+                    ctxt['lessonform'] = lessonform
 
             elif 'lessonform' in request.POST:
 

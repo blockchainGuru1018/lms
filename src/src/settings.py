@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'accounts',
     'settings',
     'tinymce',
+    'sale',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

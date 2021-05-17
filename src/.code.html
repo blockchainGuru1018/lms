@@ -29,3 +29,23 @@
       </div>
     </div>
   </nav>
+
+
+
+  <form class="form-horizontal" method="post">{% csrf_token %}
+    <div class="form-group row align-items-center">
+      <div class="col-md-2">
+        {{ categoryform.titel }}
+      </div>
+      <div class="col-md-2">
+        {{ categoryform.order }}
+      </div>
+      <div class="col-md-2">
+        {{ categoryform.description }}
+      </div>
+      <input type=hidden name="course" value="{{ course.id }}">
+      <input style="margin-top: 10px;" class="save_content_btn btn btn-primary glow" name="categoryform" type="Submit" value="{{ btn_title }}"/>
+    </div>
+  </form>
+</div>
+</div>

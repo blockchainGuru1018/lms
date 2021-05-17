@@ -38,7 +38,6 @@ class SignUpView(CreateView):
     success_url = '/login/'
 
 
-
 class LogoutView(View, LoginRequiredMixin):
     def get(self, request):
         logout(request)

@@ -89,7 +89,10 @@ class ShopListView(ListView):
 
 class ShopCreateView(CreateView):
     form_class = BestellungForm
-    template_name = 'shop/successfully.html'
+    #template_name = 'shop/successfully.html'
+
+    def get_success_url(self):
+        return reverse ('shopping:shop_success_view', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         form_neu = form.save(commit=False)
@@ -98,6 +101,16 @@ class ShopCreateView(CreateView):
         form.product = product
 
         return super(ShopCreateView, self).form_valid(form)
+
+
+class ShopSuccessView(DetailView):
+    queryset = Bestellung.objects.all()
+    template_name = 'shop/successfully.html'
+
+    def get_object(self):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(Bestellung, pk=pk)
+        return obj
 
 #class ShopCreateView(CreateView):
     #form_class = BestellungForm

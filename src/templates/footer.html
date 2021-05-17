@@ -14,7 +14,22 @@
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+
+  var x = document.getElementById("id_description").maxLength;
+  var div = document.getElementById("div");
+
+  div.innerHTML = 0;
+
+  $("#id_description").keyup(function(event){
+    var valueSum =$(this).val();
+    chars = x - valueSum.length
+    $("#div").text(chars)
+  })
+
+
 </script>
+
+
 
 <!-- Option 2: Separate Popper and Bootstrap JS -->
 

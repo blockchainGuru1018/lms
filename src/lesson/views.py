@@ -53,6 +53,7 @@ class LectureCreateView(SuccessMessageMixin, CreateView):
     form_class = LectureForm
     template_name = 'lesson/lecture_detail.html'
     success_message = "%(name)s wurde erfolgreich erstellt"
+    error_message = 'Error saving the Doc, check fields below.'
 
     def get_success_url(self):
         return reverse ('lesson:lecture_detail', kwargs={'pk': self.object.pk})
