@@ -11,45 +11,79 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from pathlib import Path
+import environ
+from environ.environ import Env
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+PROJ_DIR = BASE_DIR.parent
+
+env = environ.Env(
+    DEBUG=(bool, True),
+)
+environ.Env.read_env(os.path.join(PROJ_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1vc5#y*58gwej3fas)cg2g^epk-as4tchq#)$(vb1)7tw$x!23'
+SECRET_KEY = env.str('SECRET_KEY',
+                 default='aaa')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'web',
+    'localhost',
+    '127.0.0.1',
+    *env.list('ALLOWED_HOSTS', default=['website.com'])
+    ]
 
 
 # Application definition
+SHARED_APPS = (
+    'django_tenants',  # mandatory
+    'accounts', # you must list the app where your tenant model resides in
 
-INSTALLED_APPS = [
+    # everything below here is optional
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fontawesome-free',
-
+    
+    # 'fontawesome-free',
     "crispy_forms",
     "crispy_bootstrap5",
+    "tinymce",
+)
 
+TENANT_APPS = (
+    # The following Django contrib apps must be in TENANT_APPS
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # your tenant-specific apps
     'course',
     'lesson',
     'shopping',
-    'accounts',
     'settings',
-    'tinymce',
     'sale',
-]
+
+)
+
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -58,6 +92,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_FAIL_SILENTLY = not DEBUG
 
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -69,7 +104,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'src.urls'
 AUTH_USER_MODEL = 'accounts.UserProfile'
+TENANT_MODEL = AUTH_USER_MODEL # "accounts.UserProfile" # app.Model
 
+TENANT_DOMAIN_MODEL = "accounts.Domain"  # app.Model
+"""
+CACHES = {
+    "default": {
+        'KEY_FUNCTION': 'django_tenants.cache.make_key',
+        'REVERSE_KEY_FUNCTION': 'django_tenants.cache.reverse_key',
+    },
+}
+"""
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -94,11 +139,17 @@ WSGI_APPLICATION = 'src.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': env('DB_NAME', default='app'),
+        'USER': env('DB_USER', default='app'),
+        'PASSWORD': env('DB_PASS', default='app'),
+        'HOST': env('DB_HOST', default='app'),
+        'PORT': '5432',
     }
 }
-
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -182,3 +233,29 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
     }
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}

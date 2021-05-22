@@ -1,13 +1,9 @@
 from django.db import models
-from django.urls import reverse
-
-from course.models import Course
-from django.contrib.auth.models import User
-
-
 from tinymce.models import HTMLField
 
 from accounts.models import UserProfile
+from course.models import Course
+
 
 class Product(models.Model):
     title           = models.CharField(max_length=120, blank=True)

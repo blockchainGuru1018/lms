@@ -1,0 +1,43 @@
+
+server {
+    listen 80;
+    server_name devpaymyparents.zappli.com.au;
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }    
+}
+
+server {
+    listen 80;
+    server_name 13.236.211.174;
+    location / {
+        return 301 https://devpaymyparents.zappli.com.au$request_uri;
+    }    
+}
+
+server {
+
+    listen 443 ssl;
+    server_name devpaymyparents.zappli.com.au;
+    charset utf-8;
+    ssl_certificate /etc/letsencrypt/live/devpaymyparents.zappli.com.au/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/devpaymyparents.zappli.com.au/privkey.pem;
+    location /static/ {
+        alias /app/static/;
+    }
+    # django handle these
+    location /media/ {
+        alias /app/media/;
+    }
+
+    location / {
+        proxy_pass http://web:8000/;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}

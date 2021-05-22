@@ -1,0 +1,64 @@
+version: '2.2'
+ 
+services:
+  db:
+    ports:
+      - "5432:5432"
+    image: postgres:10-alpine
+    env_file:
+      - .env
+    volumes:
+      - lms-db-data:/var/lib/postgresql/data/ # persist data even
+
+  redis_db:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  web:
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+    env_file:
+      - .env
+    depends_on:
+      - redis_db
+      - db
+    command: docker/run_web.sh
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+    depends_on:
+      - web
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: ./docker/run_celery.sh
+
+  beat:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+    depends_on:
+      - web
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: ./docker/run_beat.sh
+
+volumes:
+  lms-db-data:

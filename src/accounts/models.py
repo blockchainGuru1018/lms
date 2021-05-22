@@ -1,17 +1,6 @@
-from django.db import models
-from datetime import timedelta
-from django.conf import settings
-from django.utils import timezone
-
-
-from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
-
-from django.core.mail import send_mail
-from django.template.loader import get_template
+from django.db import models
+from django_tenants.models import DomainMixin, TenantMixin
 
 
 class UserManager(BaseUserManager):
@@ -51,7 +40,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class UserProfile(AbstractBaseUser):
+class UserProfile(TenantMixin, AbstractBaseUser):
     email       = models.EmailField(max_length=255, unique=True)
     full_name   = models.CharField(max_length=255, blank=True, null=True)
     is_active   = models.BooleanField(default=True) # can login
@@ -94,3 +83,14 @@ class UserProfile(AbstractBaseUser):
     @property
     def is_admin(self):
         return self.admin
+    
+    # default true, schema will be automatically created and synced when it is saved
+    auto_create_schema = True
+    
+    class Meta:
+        abstract = False
+        
+
+class Domain(DomainMixin):
+    class Meta:
+        abstract = False
