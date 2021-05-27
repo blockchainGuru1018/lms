@@ -36,8 +36,12 @@
       <div class="card-body">
 
           <h4 class="mb-3">Adresse</h4>
-
-          <form action="{% url 'shopping:shop_success' %}" method="post">
+            {%if form_neu.errors%}
+            <div class="alert alert-danger">
+            {{form_neu.errors}}
+            </div>
+            {%endif%}
+          <form action="{% url 'shopping:shop_success' pk=object.pk %}" method="post">
             {% csrf_token %}
             <div class="row g-3">
                 <div class="col-sm-6">
@@ -89,7 +93,7 @@
                   {{ form_neu.tel }}
                 </div>
                 <input class="btn btn-outline-secondary" type="submit" value="Speicheren">
-                <input type=hidden name="product" value="{{ object.id }}">
+                
               </form>
 
 

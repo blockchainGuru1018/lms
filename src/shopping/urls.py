@@ -1,9 +1,6 @@
-from django.conf import settings
-from django.conf.urls.static import static
-
-from django.contrib import admin
-from django.conf.urls import include
 from django.urls import path
+
+from shopping.views import create_checkout_session
 
 from .views import (
                 ProductListView,
@@ -17,6 +14,7 @@ from .views import (
                 ShopSuccessView,
                 )
 
+
 app_name = 'shopping'
 
 urlpatterns = [
@@ -28,6 +26,7 @@ urlpatterns = [
     path('shop/', ShopListView.as_view(), name='shop_list'),
     path('shop/produkt/<pk>', ShopDetaileView.as_view(), name='shop_detaile'),
     #path('shop/order/', ShopCreateView.as_view(), name='shop_create'),
-    path('shop/success/', ShopCreateView.as_view(), name='shop_success'),
-    path('shop/success/<pk>', ShopSuccessView.as_view(), name='shop_success_view'),
+    path('shop/success/<pk>', ShopCreateView.as_view(), name='shop_success'),
+    path('shop/success/<pk>/done', ShopSuccessView.as_view(), name='shop_success_view'),
+    path('shop/success/<pk>/create-checkout-session', create_checkout_session, name='create_checkout_session'),
 ]

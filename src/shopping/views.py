@@ -1,32 +1,28 @@
-import json
-import stripe
 from datetime import datetime
+import json
 
-from django.core.mail import send_mail
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-
-from django.urls import reverse, reverse_lazy
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-
-from django.views.generic.edit import FormView
-
-from django.views import View
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import DeleteView
-from django.views.generic.edit import UpdateView
-from django.views.generic.edit import CreateView
-from django.views.generic.list import ListView
-from django.views.generic import TemplateView
-
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-
-from .models import Product, Bestellung
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import FormView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
+import stripe
 
 from .forms import ProductForm, BestellungForm
+from .models import Product, Bestellung
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -88,28 +84,46 @@ class ShopListView(ListView):
 #Stripe payment view
 class ShopCreateView(CreateView):
     form_class = BestellungForm
-    #template_name = 'shop/successfully.html'
+    template_name = 'shop/detail.html'
 
     def get_success_url(self):
         return reverse ('shopping:shop_success_view', kwargs={'pk': self.object.pk})
+    
+    def get_context_data(self, **kwargs):
+        ctx = CreateView.get_context_data(self, **kwargs)
+        ctx['object'] = self.get_product()
+        ctx['form_neu'] = kwargs.get('form', self.form_class())
+        return ctx
+    
+    def get_product(self):
+        pk = self.kwargs.get("pk")
+        return get_object_or_404(Product, id=pk)
 
     def form_valid(self, form):
-        form_neu = form.save(commit=False)
-        product = form.data['product']
-        product = get_object_or_404(Product, id=product)
-        form.product = product
-
-        return super(ShopCreateView, self).form_valid(form)
+        form.save(commit=False)
+        self.object = self.get_product()
+        form.product = self.object
+        form.save()
+        
+        return redirect(self.get_success_url())
 
 #Stripe Store important data for billing
 class ShopSuccessView(DetailView):
     queryset = Bestellung.objects.all()
     template_name = 'shop/successfully.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = DetailView.get_context_data(self, **kwargs)
+        ctx['settings'] = settings
+        return ctx
+    
     def get_object(self):
         pk = self.kwargs.get("pk")
         obj = get_object_or_404(Bestellung, pk=pk)
         return obj
+
+
+
 
 #class ShopCreateView(CreateView):
     #form_class = BestellungForm
@@ -148,15 +162,24 @@ class ShopDetaileView(DetailView):
         #context['lesson'] = self.get_object()
         return context
 
+@csrf_exempt
+def create_checkout_session(request, pk):
+    obj = get_object_or_404(Bestellung, pk=pk)
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+          'price_data': {
+            'currency': 'usd',
+            'product_data': {
+              'name': obj.product.title,
+            },
+            'unit_amount': int(100*obj.product.preis),
+          },
+          'quantity': 1,
+        }],
+        mode='payment',
+        success_url='https://example.com/success',
+        cancel_url='https://example.com/cancel',
+    )
 
-
-
-
-
-
-
-
-
-
-
-#
+    return JsonResponse(dict(id=session.id))

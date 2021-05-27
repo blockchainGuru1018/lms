@@ -131,3 +131,5 @@ dmypy.json
 # eclipse/pydev editor
 .project
 .pydevproject
+
+src/static_cdn/**

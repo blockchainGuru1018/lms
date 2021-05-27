@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls.base import reverse
 from tinymce.models import HTMLField
 
 from accounts.models import UserProfile
@@ -34,3 +35,8 @@ class Bestellung(models.Model):
 
     def __str__(self):
         return self.vorname
+    
+    @property
+    def create_checkout_session_url(self):
+        return 'create-checkout-session'
+        # return reverse('create_checkout_session', kwargs={'pk': self.pk})

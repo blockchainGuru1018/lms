@@ -206,6 +206,8 @@ STRIPE_WEBHOOK_SECRET = ""
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
+# TINYMCE_JS_URL = os.path.join(STATIC_URL, "staic_cdn/staic_root/tiny_mce/tiny_mce.js")
+
 TINYMCE_DEFAULT_CONFIG = {
 
     'cleanup_on_startup': True,
@@ -234,28 +236,25 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': True,
     }
 
-
-
+TENANT_LIMIT_SET_CALLS = True
+"""
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
     'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
+        'tenant_context': {
+            '()': 'django_tenants.log.TenantContextFilter'
+        },
+    },
+    'formatters': {
+        'tenant_context': {
+            'format': '[%(schema_name)s:%(domain_url)s] '
+            '%(levelname)-7s %(asctime)s %(message)s',
+        },
     },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        'console': {
+            'filters': ['tenant_context'],
         },
-    }
+    },
 }
+
+"""

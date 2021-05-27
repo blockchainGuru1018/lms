@@ -1,9 +1,8 @@
 #from tinymce.widgets import TinyMCE
-from django.forms.widgets import CheckboxSelectMultiple
+from django import forms
 from django.forms import HiddenInput
 from django.forms import ModelForm, Textarea, CharField
-from django import forms
-
+from django.forms.widgets import CheckboxSelectMultiple
 from tinymce.widgets import TinyMCE
 
 from .models import Product, Bestellung
@@ -45,12 +44,10 @@ class BestellungForm(ModelForm):
 
     class Meta:
         model = Bestellung
-        fields = 'firma', 'product', 'vorname', 'nachnahme', 'email', 'adresse', 'plz', 'stadt', 'land', 'tax_nr', 'tel',
-        widgets = {
-            'product': HiddenInput(),
-        }
+        fields = 'firma', 'vorname', 'nachnahme', 'email', 'adresse', 'plz', 'stadt', 'land', 'tax_nr', 'tel',
+        
         error_messages = {
             'firma': {
                 'required': ("Application field is required"),
             },
-            }
+        }
