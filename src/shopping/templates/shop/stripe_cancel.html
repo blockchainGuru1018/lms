@@ -1,0 +1,53 @@
+{% extends "shop.html" %}
+{%block extra_head%}
+<script src="//js.stripe.com/v3/" ></script>
+{%include 'shop/includes/product_image_css.html' with object=object %}
+{%endblock%}
+<!--Content-->
+{% block content %}
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="banner"></div>
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Thanks for your order!</h1>
+        <p class="card-text">{% autoescape off %}{{ object.description }}{% endautoescape %}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card-body">
+
+          <h4 class="mb-3">Payment cancelled</h4>
+            
+          <p>
+      Sorry, but payment was cancelled.
+      If you have any questions, please email
+      <a href="mailto:sale@example.com">sale@example.com</a>.
+    </p>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-1">
+            {%include 'shop/includes/summary.html'%}
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+<!--./Content -->

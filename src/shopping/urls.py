@@ -3,16 +3,18 @@ from django.urls import path
 from shopping.views import create_checkout_session
 
 from .views import (
-                ProductListView,
-                ProductCreateView,
-                ProductUpdateView,
-                ProductDetailView,
-                ProductDeletelView,
-                ShopListView,
-                ShopDetaileView,
-                ShopCreateView,
-                ShopSuccessView,
-                )
+    ProductListView,
+    ProductCreateView,
+    ProductUpdateView,
+    ProductDetailView,
+    ProductDeletelView,
+    ShopListView,
+    ShopDetaileView,
+    ShopCreateView,
+    ShopSuccessView,
+    SripeSuccessView,
+    SripeCancelView,
+    )
 
 
 app_name = 'shopping'
@@ -29,4 +31,7 @@ urlpatterns = [
     path('shop/success/<pk>', ShopCreateView.as_view(), name='shop_success'),
     path('shop/success/<pk>/done', ShopSuccessView.as_view(), name='shop_success_view'),
     path('shop/success/<pk>/create-checkout-session', create_checkout_session, name='create_checkout_session'),
+    path('shop/sripe-success/<pk>', SripeSuccessView.as_view(), name='stripe_success'),
+    path('shop/sripe-cancel/<pk>', SripeCancelView.as_view(), name='stripe_cancel'),
+    
 ]

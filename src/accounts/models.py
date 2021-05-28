@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from django_tenants.models import DomainMixin, TenantMixin
 
 
@@ -89,7 +91,25 @@ class UserProfile(TenantMixin, AbstractBaseUser):
     
     class Meta:
         abstract = False
+    
+    TPL_DIR = 'accounts/emails/new_users'
+    
+    def send_new_user_email(self, order_id):
+        """send email to new created user"""
+        from shopping.models import Bestellung
+        order = get_object_or_404(Bestellung, pk=order_id)
+        payload = dict(user=self, order=order)
         
+        subject = render_to_string(
+            f'{self.TPL_DIR}/subject.html',
+            payload
+            )
+        body = render_to_string(
+            f'{self.TPL_DIR}/body.html',
+            payload
+            )
+        
+        self.email_user(subject, body)
 
 class Domain(DomainMixin):
     class Meta:

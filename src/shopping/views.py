@@ -1,28 +1,26 @@
 from datetime import datetime
-import json
+import logging
 
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import send_mail
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
-from django.views.generic.edit import FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 import stripe
 
+from shopping.tasks.checkout import create_user_after_checkout
+
 from .forms import ProductForm, BestellungForm
 from .models import Product, Bestellung
 
+
+logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -165,21 +163,51 @@ class ShopDetaileView(DetailView):
 @csrf_exempt
 def create_checkout_session(request, pk):
     obj = get_object_or_404(Bestellung, pk=pk)
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=[{
+    
+    data = {
+        'payment_method_types': ['card'],
+        'line_items': [{
           'price_data': {
-            'currency': 'usd',
+            'currency': 'eur',
             'product_data': {
               'name': obj.product.title,
             },
-            'unit_amount': int(100*obj.product.preis),
+            'unit_amount': obj.product.stripe_price,
           },
           'quantity': 1,
         }],
-        mode='payment',
-        success_url='https://example.com/success',
-        cancel_url='https://example.com/cancel',
+        'mode': 'payment',
+        'success_url': obj.get_domain_url(obj.stripe_success_url),
+        'cancel_url': obj.get_domain_url(obj.stripe_cancel_url),
+    }
+    logger.info(f'data:{data}...')
+    session = stripe.checkout.Session.create(
+        **data
     )
 
     return JsonResponse(dict(id=session.id))
+
+#Stripe successfull page
+class SripeCancelView(DetailView):
+    queryset = Bestellung.objects.all()
+    template_name = 'shop/stripe_failed.html'
+    
+    def get_object(self):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(Bestellung, pk=pk)
+        return obj
+
+
+class SripeSuccessView(SripeCancelView):
+    template_name = 'shop/stripe_success.html'
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # create user and send email in this
+        # it will be an async call as
+        """ 
+        create_user_after_checkout.apply_async(
+            args=[self.object.pk]
+            )
+        """
+        create_user_after_checkout(self.object.pk)
+        return SripeCancelView.get(self, request, *args, **kwargs)

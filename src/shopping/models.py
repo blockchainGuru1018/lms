@@ -1,3 +1,7 @@
+import random
+import string
+
+from django.conf import settings
 from django.db import models
 from django.urls.base import reverse
 from tinymce.models import HTMLField
@@ -18,6 +22,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def stripe_price(self):
+        return int(100*self.preis)
 
 
 class Bestellung(models.Model):
@@ -38,5 +46,34 @@ class Bestellung(models.Model):
     
     @property
     def create_checkout_session_url(self):
-        return 'create-checkout-session'
-        # return reverse('create_checkout_session', kwargs={'pk': self.pk})
+        # return 'create-checkout-session'
+        url = reverse('shopping:create_checkout_session', kwargs={'pk': self.pk})
+        
+        return url
+        
+    @property
+    def stripe_success_url(self):
+        return reverse('shopping:stripe_success', kwargs={'pk': self.pk})
+    
+    @property
+    def stripe_cancel_url(self):
+        return reverse('shopping:stripe_cancel', kwargs={'pk': self.pk})
+    
+    def get_domain_url(self, url):
+        return f'{settings.PUBLIC_URL}{url}'
+    
+    
+    @property
+    def rand_password(self):
+        return ''.join(
+            [random.choice(string.printable) for _ in range(8)]
+            )
+    
+    def create_user_from_order(self):
+        new_user = UserProfile.objects.create_user(
+                self.email, self.vorname,
+                self.rand_password)
+        new_user.schema_name=self.product.user.schema_name
+        new_user.save()
+        
+        return new_user

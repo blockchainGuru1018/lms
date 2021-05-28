@@ -258,3 +258,6 @@ LOGGING = {
 }
 
 """
+
+PUBLIC_URL = env.str('PUBLIC_URL', default='http://localhost:8000')
+
