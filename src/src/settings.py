@@ -33,11 +33,14 @@ SECRET_KEY = env.str('SECRET_KEY',
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
+allowed_host = env.list('ALLOWED_HOSTS', default=['website.com'])
+
 ALLOWED_HOSTS = [
     'web',
     'localhost',
     '127.0.0.1',
-    *env.list('ALLOWED_HOSTS', default=['website.com'])
+    'v2202004107229115572.luckysrv.de',
+    *allowed_host,
     ]
 
 # Application definition
