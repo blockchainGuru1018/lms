@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from pathlib import Path
 import environ
-from environ.environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +22,6 @@ env = environ.Env(
     DEBUG=(bool, True),
 )
 environ.Env.read_env(os.path.join(PROJ_DIR, '.env'))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -42,11 +40,10 @@ ALLOWED_HOSTS = [
     *env.list('ALLOWED_HOSTS', default=['website.com'])
     ]
 
-
 # Application definition
 SHARED_APPS = (
     'django_tenants',  # mandatory
-    'accounts', # you must list the app where your tenant model resides in
+    'customer',  # you must list the app where your tenant model resides in
 
     # everything below here is optional
     'django.contrib.admin',
@@ -63,6 +60,7 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
+    'accounts',
     # The following Django contrib apps must be in TENANT_APPS
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,16 +68,16 @@ TENANT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
     # your tenant-specific apps
     'course',
     'lesson',
     'shopping',
     'settings',
     'sale',
+    'django_extensions',
 
 )
-
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
@@ -104,9 +102,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'src.urls'
 AUTH_USER_MODEL = 'accounts.UserProfile'
-TENANT_MODEL = AUTH_USER_MODEL # "accounts.UserProfile" # app.Model
+TENANT_MODEL = "customer.Client"  # app.Model
 
-TENANT_DOMAIN_MODEL = "accounts.Domain"  # app.Model
+TENANT_DOMAIN_MODEL = "customer.Domain"  # app.Model
 """
 CACHES = {
     "default": {
@@ -132,7 +130,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'src.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -169,7 +166,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 TIME_ZONE = 'Europe/Berlin'
@@ -182,11 +178,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
-#LOGIN_REDIRECT_URL = 'accounts/login/'
+# LOGIN_REDIRECT_URL = 'accounts/login/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_my_proj"),
@@ -213,7 +208,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 20,
     'selector': 'textarea',
-    'theme': 'modern',
     'plugins': '''
             textcolor save link image media preview codesample contextmenu
             table code lists fullscreen  insertdatetime  nonbreaking
@@ -260,4 +254,23 @@ LOGGING = {
 """
 
 PUBLIC_URL = env.str('PUBLIC_URL', default='http://localhost:8000')
+
+STATICFILES_FINDERS = [
+    "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+MULTITENANT_STATICFILES_DIRS = [
+    os.path.join("absolute/path/to/your_project_dir", "tenants/%s/static"),
+]
+
+EMAIL_BACKEND = env.str(
+    'EMAIL_BACKEND',
+    default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORDEMAIL_HOST_PASSWORD', default='')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_HOST_NAME = env.str('EMAIL_HOST_NAME', default='')
 

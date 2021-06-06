@@ -3,8 +3,6 @@ import logging
 from celery.app import shared_task
 from django.shortcuts import get_object_or_404
 
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -16,7 +14,7 @@ def create_user_after_checkout(order_id):
     
     user = order.create_user_from_order()
     
-    user.send_new_user_email()
+    user.send_new_user_email(order_id)
     
     logger.info(f'done.')
     

@@ -19,10 +19,10 @@ from shopping.tasks.checkout import create_user_after_checkout
 from .forms import ProductForm, BestellungForm
 from .models import Product, Bestellung
 
-
 logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 class ProductCreateView(SuccessMessageMixin, CreateView):
     model = Product
@@ -73,13 +73,14 @@ class ProductDeletelView(SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('shopping:product_list')
 
 
-#Shop
+# Shop
 class ShopListView(ListView):
     queryset = Product.objects.all()
     model = Product
     template_name = 'shop/list.html'
 
-#Stripe payment view
+
+# Stripe payment view
 class ShopCreateView(CreateView):
     form_class = BestellungForm
     template_name = 'shop/detail.html'
@@ -105,7 +106,8 @@ class ShopCreateView(CreateView):
         
         return redirect(self.get_success_url())
 
-#Stripe Store important data for billing
+
+# Stripe Store important data for billing
 class ShopSuccessView(DetailView):
     queryset = Bestellung.objects.all()
     template_name = 'shop/successfully.html'
@@ -120,29 +122,25 @@ class ShopSuccessView(DetailView):
         obj = get_object_or_404(Bestellung, pk=pk)
         return obj
 
+# class ShopCreateView(CreateView):
+    # form_class = BestellungForm
+    # template_name = 'shop/successfully.html'
 
+    # def get_success_url(self):
+        # return reverse ('shopping:shop_list')
 
+    # def form_valid(self, form):
+        # object = form.instance.lecture = Lesson.objects.get(pk=self.kwargs['pk'])
+        # self.object = form.save()
+        # return super().form_valid(form)
 
-#class ShopCreateView(CreateView):
-    #form_class = BestellungForm
-    #template_name = 'shop/successfully.html'
-
-    #def get_success_url(self):
-        #return reverse ('shopping:shop_list')
-
-    #def form_valid(self, form):
-        #object = form.instance.lecture = Lesson.objects.get(pk=self.kwargs['pk'])
-        #self.object = form.save()
-        #return super().form_valid(form)
-
-    #def form_valid(self, form):
-        #if 'order' in request.POST:
-            #form = BestellungForm(request.POST, request.FILES)
-            #if form.is_valid():
-                #form = form.save(commit=False)
-                #form.save()
-        #return render(request, self.template_name)
-
+    # def form_valid(self, form):
+        # if 'order' in request.POST:
+            # form = BestellungForm(request.POST, request.FILES)
+            # if form.is_valid():
+                # form = form.save(commit=False)
+                # form.save()
+        # return render(request, self.template_name)
 
 
 class ShopDetaileView(DetailView):
@@ -157,12 +155,16 @@ class ShopDetaileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ShopDetaileView, self).get_context_data(**kwargs)
         context['form_neu'] = BestellungForm
-        #context['lesson'] = self.get_object()
+        # context['lesson'] = self.get_object()
         return context
+
 
 @csrf_exempt
 def create_checkout_session(request, pk):
     obj = get_object_or_404(Bestellung, pk=pk)
+    domain_url = request.tenant.domain_url
+    scheme = request.scheme
+    port = request.META.get('SERVER_PORT', 80)
     
     data = {
         'payment_method_types': ['card'],
@@ -177,8 +179,8 @@ def create_checkout_session(request, pk):
           'quantity': 1,
         }],
         'mode': 'payment',
-        'success_url': obj.get_domain_url(obj.stripe_success_url),
-        'cancel_url': obj.get_domain_url(obj.stripe_cancel_url),
+        'success_url': obj.get_domain_url(obj.stripe_success_url, domain_url, scheme, port=port),
+        'cancel_url': obj.get_domain_url(obj.stripe_cancel_url, domain_url, scheme, port=port),
     }
     logger.info(f'data:{data}...')
     session = stripe.checkout.Session.create(
@@ -187,7 +189,8 @@ def create_checkout_session(request, pk):
 
     return JsonResponse(dict(id=session.id))
 
-#Stripe successfull page
+
+# Stripe successfull page
 class SripeCancelView(DetailView):
     queryset = Bestellung.objects.all()
     template_name = 'shop/stripe_failed.html'
@@ -200,6 +203,7 @@ class SripeCancelView(DetailView):
 
 class SripeSuccessView(SripeCancelView):
     template_name = 'shop/stripe_success.html'
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         # create user and send email in this
