@@ -99,9 +99,8 @@ class ShopCreateView(CreateView):
         return get_object_or_404(Product, id=pk)
 
     def form_valid(self, form):
-        form.save(commit=False)
-        self.object = self.get_product()
-        form.product = self.object
+        self.object = form.save(commit=False)
+        self.product = self.get_product()
         form.save()
         
         return redirect(self.get_success_url())
@@ -121,26 +120,6 @@ class ShopSuccessView(DetailView):
         pk = self.kwargs.get("pk")
         obj = get_object_or_404(Bestellung, pk=pk)
         return obj
-
-# class ShopCreateView(CreateView):
-    # form_class = BestellungForm
-    # template_name = 'shop/successfully.html'
-
-    # def get_success_url(self):
-        # return reverse ('shopping:shop_list')
-
-    # def form_valid(self, form):
-        # object = form.instance.lecture = Lesson.objects.get(pk=self.kwargs['pk'])
-        # self.object = form.save()
-        # return super().form_valid(form)
-
-    # def form_valid(self, form):
-        # if 'order' in request.POST:
-            # form = BestellungForm(request.POST, request.FILES)
-            # if form.is_valid():
-                # form = form.save(commit=False)
-                # form.save()
-        # return render(request, self.template_name)
 
 
 class ShopDetaileView(DetailView):

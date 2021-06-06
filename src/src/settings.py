@@ -259,7 +259,7 @@ STATICFILES_FINDERS = [
     "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
+   
 ]
 MULTITENANT_STATICFILES_DIRS = [
     os.path.join("absolute/path/to/your_project_dir", "tenants/%s/static"),
