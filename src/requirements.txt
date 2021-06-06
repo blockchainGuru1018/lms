@@ -34,5 +34,5 @@ django-tinymce==3.3.0
 django-tenants==3.3.1
 django-environ==0.4.5
 crispy-bootstrap5==0.3.1
-django-compressor==2.4.1
+# django-compressor==2.4.1
 django-extensions==3.1.3
