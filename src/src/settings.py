@@ -73,7 +73,7 @@ TENANT_APPS = (
     'settings',
     'sale',
     'django_extensions',
-
+    'django_celery_beat',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -270,4 +270,9 @@ EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORDEMAIL_HOST_PASSWORD', default=
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='')
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
 EMAIL_HOST_NAME = env.str('EMAIL_HOST_NAME', default='')
+
+# celery stuff
+CELERY_BROKER_URL = env.str(
+    'CELERY_BROKER_URL',
+    default='redis://redis_db:6379/0')
 

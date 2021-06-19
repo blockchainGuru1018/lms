@@ -6,4 +6,4 @@ sleep 10
 cd /app/src
 #runs celery
 
-celery -A circle worker -l INFO
+celery -A src worker -l INFO

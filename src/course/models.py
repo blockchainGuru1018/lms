@@ -7,7 +7,7 @@ class Course(models.Model):
     name = models.CharField(max_length=120)
     update = models.DateTimeField(auto_now=True)
     create = models.DateTimeField(auto_now_add=True)
-    #is_active = models.BooleanField(default=False)
+    # is_active = models.BooleanField(default=False)
     img = models.FileField(upload_to='course/', null=True, blank=True, default='placholder_vYebXbG.png')
     description = models.TextField(blank=True, null=True, max_length=1024)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='owner', on_delete=models.CASCADE)
@@ -17,7 +17,8 @@ class Course(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("course:course_update", kwargs={"pk":self.pk})
+        return reverse("course:course_update", kwargs={"pk": self.pk})
+
 
 class Participation(models.Model):
 
@@ -26,6 +27,7 @@ class Participation(models.Model):
 
     def __str__(self):
         return '{} for {}'.format(self.user, self.course)
+
 
 class Category(models.Model):
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
@@ -38,7 +40,6 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse("course:category_update", kwargs={"pk":self.pk})
-
 
     class Meta():
         ordering = ['order']
