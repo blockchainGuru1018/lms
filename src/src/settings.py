@@ -54,6 +54,7 @@ SHARED_APPS = (
     "crispy_forms",
     "crispy_bootstrap5",
     "tinymce",
+    'django_extensions',
 )
 
 TENANT_APPS = (
@@ -73,7 +74,6 @@ TENANT_APPS = (
     'settings',
     'sale',
     'django_extensions',
-    'django_celery_beat',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

@@ -1,5 +1,6 @@
 
 from django.db import models
+from django.db.models.expressions import Exists, Subquery, OuterRef
 from django.shortcuts import get_object_or_404
 
 from course.models import Category
@@ -14,6 +15,12 @@ class DatefieldBaseModel(models.Model):
         abstract = True
 
 
+class LessonManager(models.QuerySet):
+
+    def filter_active(self):
+        return self.filter(is_active=True)
+
+
 class Lesson(DatefieldBaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=120)
@@ -21,13 +28,15 @@ class Lesson(DatefieldBaseModel):
     link_url = models.URLField(null=False, blank=False)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, null=True, max_length=1024)
-
+    
     def __str__(self):
         return self.name
 
     class Meta():
         ordering = ['order']
     
+    objects = LessonManager.as_manager()
+
 
 class Lecture(models.Model):
     name = models.CharField(max_length=150)
@@ -39,6 +48,23 @@ class Lecture(models.Model):
         return self.name
 
 
+class LessonVenueManager(models.QuerySet):
+
+    def filter_active(self):
+        return self.filter(is_active=True)
+    
+    def filter_available(self):
+        """ active and not sent"""
+        qs = self.filter_active()
+        qs = qs.annotate(is_sent=Exists(
+            Subquery(SentLessonVenue.objects.filter(
+                venure=OuterRef('pk')))
+            ))
+        qs = qs.filter(is_sent=False)
+        
+        return qs
+
+
 class LessonVenue(DatefieldBaseModel):
     participations = models.ManyToManyField("course.Participation",
                                         related_name='lesson_venues')
@@ -48,6 +74,8 @@ class LessonVenue(DatefieldBaseModel):
 
     def __str__(self):
         return '{}'.format(self.lesson)
+    
+    objects = LessonVenueManager.as_manager()
     
     @classmethod
     def send_student_active_lesson(cls, pk):
@@ -64,4 +92,15 @@ class LessonVenue(DatefieldBaseModel):
             participation.user.send_available_lesson_email(
                 self.lesson, participation.course
                 )
+        
+        self.sent_venues.create(venure=self)
+
+
+class SentLessonVenue(DatefieldBaseModel):
+    venure = models.ForeignKey(LessonVenue,
+                               related_name='sent_venues',
+                               on_delete=models.CASCADE, default='1')
+    
+    def __str__(self):
+        return f'sent venuue {self.pk}'
             
