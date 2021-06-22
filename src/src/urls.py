@@ -14,7 +14,6 @@ urlpatterns = [
     path('lesson/', include('lesson.urls')),
     path('settings/', include('settings.urls')),
     path('tinymce/', include('tinymce.urls')),
-    path('sale/', include('sale.urls')),
     path('admin/', admin.site.urls),
 ]
 

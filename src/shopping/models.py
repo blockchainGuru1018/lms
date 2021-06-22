@@ -24,17 +24,22 @@ class Product(models.Model):
 
 
 class Bestellung(models.Model):
-    firma       = models.CharField(max_length=120, null=False, blank=False)
-    vorname     = models.CharField(max_length=120, blank=True)
-    nachnahme   = models.CharField(max_length=120, blank=True)
-    email       = models.CharField(max_length=220, null=False, blank=False)
-    adresse     = models.CharField(max_length=120, null=False, blank=False)
-    plz         = models.PositiveSmallIntegerField()
-    stadt       = models.CharField(max_length=120, null=False, blank=False)
-    land        = models.CharField(max_length=120, null=False, blank=False)
-    tax_nr      = models.CharField(max_length=120, null=False, blank=False)
-    tel         = models.CharField(max_length=120, null=False, blank=False)
-    product     = models.ForeignKey(Product, on_delete=models.CASCADE, default='1')
+    firma       = models.CharField(max_length=120, blank=True)
+    #vorname     = models.CharField(max_length=120, blank=True)
+    #nachnahme   = models.CharField(max_length=120, blank=True)
+    #email       = models.CharField(max_length=220, blank=True)
+    #adresse     = models.CharField(max_length=120, blank=True)
+    #plz         = models.PositiveSmallIntegerField()
+    #stadt       = models.CharField(max_length=120, blank=True)
+    #land        = models.CharField(max_length=120, blank=True)
+    #tax_nr      = models.PositiveSmallIntegerField()
+    #tel         = models.CharField(max_length=120, blank=True)
+    product       = models.ForeignKey(Product, on_delete=models.CASCADE, default='')
 
     def __str__(self):
-        return self.vorname
+        return self.firma
+
+    def get_absolute_url(self):
+        return reverse("shopping:shop_list")
+
+    #, kwargs={"pk":self.pk}

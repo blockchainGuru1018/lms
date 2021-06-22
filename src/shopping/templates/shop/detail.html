@@ -3,10 +3,9 @@
 <!--Content-->
 {% block content %}
 
-
 <style media="screen">
   .banner {
-   background-image: url("{{ object.img.url }}}");
+   background-image: url("");
    background-color: #efefef
    background-repeat: repeat-x;
    width: 100%;
@@ -36,60 +35,66 @@
       <div class="card-body">
 
           <h4 class="mb-3">Adresse</h4>
-
-          <form action="{% url 'shopping:shop_success' %}" method="post">
+          <form class="needs-validation" action="" method="post">
             {% csrf_token %}
             <div class="row g-3">
                 <div class="col-sm-6">
                   <label for="firstName" class="form-label">Vorname</label>
-                  {{ form_neu.vorname }}
+                  {{ form.vorname }}
                 </div>
 
                 <div class="col-sm-6">
                   <label for="lastName" class="form-label">Nachname</label>
-                  {{ form_neu.nachnahme }}
+                  {{ form.nachnahme }}
                 </div>
 
                 <div class="col-12">
                   <label for="username" class="form-label">Unternehmensname</label>
-                    {{ form_neu.firma }}
+                    {{ form.firma }}
                 </div>
 
                 <div class="col-12">
                   <label for="email" class="form-label">Email</label>
-                  {{ form_neu.email }}
+                  {{ form.email }}
                 </div>
 
                 <div class="col-6">
                   <label for="address" class="form-label">Address</label>
-                  {{ form_neu.adresse }}
+                  {{ form.adresse }}
                 </div>
 
                 <div class="col-md-6">
                   <label for="zip" class="form-label">PLZ</label>
-                  {{ form_neu.plz }}
+                  {{ form.plz }}
                 </div>
 
                 <div class="col-6">
                   <label for="address2" class="form-label">Stand</label>
-                  {{ form_neu.stadt }}
+                  {{ form.stadt }}
                 </div>
                 <div class="col-6">
                   <label for="address2" class="form-label">Land</label>
-                  {{ form_neu.land }}
+                  {{ form.land }}
                 </div>
 
                 <div class="col-6">
                   <label for="address2" class="form-label">Uid Nummer</label>
-                  {{ form_neu.tax_nr }}
+                  {{ form.tax_nr }}
                 </div>
 
                 <div class="col-6">
                   <label for="address2" class="form-label">Telefonnummer</label>
-                  {{ form_neu.tel }}
+                  {{ form.tel }}
                 </div>
-                <input class="btn btn-outline-secondary" type="submit" value="Speicheren">
-                <input type=hidden name="product" value="{{ object.id }}">
+                <input class="btn btn-outline-secondary" name="order" type="submit" value="Speicheren">
+              </form>
+
+              <form action="{% url 'shopping:shop_success' %}" method="post">
+                  {% csrf_token %}
+                  {{ form_neu.firma }}
+
+                  <input class="btn btn-outline-success" type="submit" value="{{ btn_title }}">
+                  <input type=hidden name="product" value="{{ object.id }}">
               </form>
 
 

@@ -88,10 +88,7 @@ class ShopListView(ListView):
 #Stripe payment view
 class ShopCreateView(CreateView):
     form_class = BestellungForm
-    #template_name = 'shop/successfully.html'
-
-    def get_success_url(self):
-        return reverse ('shopping:shop_success_view', kwargs={'pk': self.object.pk})
+    template_name = 'shop/successfully.html'
 
     def form_valid(self, form):
         form_neu = form.save(commit=False)
@@ -101,6 +98,7 @@ class ShopCreateView(CreateView):
 
         return super(ShopCreateView, self).form_valid(form)
 
+<<<<<<< HEAD
 #Stripe Store important data for billing
 class ShopSuccessView(DetailView):
     queryset = Bestellung.objects.all()
@@ -111,6 +109,8 @@ class ShopSuccessView(DetailView):
         obj = get_object_or_404(Bestellung, pk=pk)
         return obj
 
+=======
+>>>>>>> parent of 4aa45cf („updates“)
 #class ShopCreateView(CreateView):
     #form_class = BestellungForm
     #template_name = 'shop/successfully.html'

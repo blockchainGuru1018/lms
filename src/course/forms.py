@@ -22,7 +22,7 @@ class CourseForm(ModelForm):
 class CategoryForm(ModelForm):
     titel = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Kategorie Name'}))
     order = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Reihenfolgenummer'}))
-    description = forms.CharField(max_length=120, label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Beschreibung'}))
+    description = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Beschreibung'}))
     class Meta:
         model = Category
         fields = 'titel', 'course', 'order', 'description'

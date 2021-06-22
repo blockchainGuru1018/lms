@@ -2,35 +2,27 @@
 
 {% block content %}
 
-<div class="col-md-3">
-  <div class="card">
-    <div class="card-header">
-      Unternehmens einstellungen
-    </div>
-    <div class="card-body">
-      {% if settings_count %}
-      {% for object in settings_count %}
+<div class="card">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
 
-      <p>{{ object.unternehmens_name }}</p>
-      <p>{{ object.strasse }}</p>
-      <p>{{ object.strasse2 }}</p>
-      <p>{{ object.ort }}</p>
-      <p>{{ object.land }}</p>
+    {% if settings_count %}
+    {% for object in settings_count %}
 
-      <a href="{% url 'settings:settings_update' object.id %}" class="btn btn-primary">Einstellung ändern</a>
-
-      {% endfor %}
-      {% else %}
-      <a href="{% url 'settings:settings_create' %}" class="btn btn-primary">Go somewhere</a>
-      {% endif %}
+    <a href="{% url 'settings:settings_update' object.id %}" class="btn btn-primary">Go somewhere</a>
+    {% endfor %}
+    {% else %}
+    <a href="{% url 'settings:settings_create' %}" class="btn btn-primary">Go somewhere</a>
+    {% endif %}
 
 
-    </div>
-    <div class="card-footer text-muted">
-      
-    </div>
+  </div>
+  <div class="card-footer text-muted">
+    2 days ago
   </div>
 </div>
-
 
 {% endblock %}

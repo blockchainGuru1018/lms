@@ -14,7 +14,6 @@ from .views import (
                 ShopListView,
                 ShopDetaileView,
                 ShopCreateView,
-                ShopSuccessView,
                 )
 
 app_name = 'shopping'
@@ -29,5 +28,4 @@ urlpatterns = [
     path('shop/produkt/<pk>', ShopDetaileView.as_view(), name='shop_detaile'),
     #path('shop/order/', ShopCreateView.as_view(), name='shop_create'),
     path('shop/success/', ShopCreateView.as_view(), name='shop_success'),
-    path('shop/success/<pk>', ShopSuccessView.as_view(), name='shop_success_view'),
 ]

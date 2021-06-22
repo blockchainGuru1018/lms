@@ -9,8 +9,8 @@ from .models import Lesson, Lecture
 
 class LessonForm(ModelForm):
     name = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Lektionsname'}))
-    order = forms.CharField(label='', required=True, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Reihenfolgenummer'}))
-    link_url = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Viemo link'}))
+    order = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Reihenfolgenummer'}))
+    link_url = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Viemo link'}))
     description = forms.CharField(label='', required=False, widget=forms.Textarea(attrs={"class": 'form-control', 'style': 'height: 20%;', 'placeholder':'Beschreibung','rows': 4, 'cols': 40}))
     class Meta:
         model = Lesson
@@ -20,9 +20,9 @@ class LessonForm(ModelForm):
         }
 
 class LectureForm(ModelForm):
-    name = forms.CharField(label='', required=True, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Name Dokument'}))
+    name = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Name Dokument'}))
     description = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Beschreibung'}))
-    photo = forms.FileField(label='', required=True, widget=forms.FileInput(attrs={"class": 'form-control', "type":'file'}))
+    photo = forms.FileField(label='', required=False, widget=forms.FileInput(attrs={"class": 'form-control', "type":'file'}))
     class Meta:
         model = Lecture
         fields = 'name', 'lecture', 'description', 'photo'
@@ -31,9 +31,9 @@ class LectureForm(ModelForm):
         }
 
 class LectureFormUpdate(ModelForm):
-    name = forms.CharField(label='', required=True, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Name Dokument'}))
+    name = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Name Dokument'}))
     description = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Beschreibung'}))
-    photo = forms.FileField(label='', required=True, widget=forms.FileInput(attrs={"class": 'form-control', "type":'file'}))
+    photo = forms.FileField(label='', required=False, widget=forms.FileInput(attrs={"class": 'form-control', "type":'file'}))
     class Meta:
         model = Lecture
         fields = 'name', 'photo', 'lecture', 'description'

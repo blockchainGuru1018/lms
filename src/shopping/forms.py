@@ -26,31 +26,22 @@ class ProductForm(ModelForm):
 
 
 class BestellungForm(ModelForm):
-    firma = forms.CharField(required=False, label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Firma'}))
-    vorname = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Vorname'}))
-    nachnahme = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Nachname'}))
-    email = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'E-Mail Adresse'}))
-    adresse = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Adresse'}))
-    plz = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'PLZ'}))
-    stadt = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Stadt'}))
-    land = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Produkt Name'}))
-    tax_nr = forms.CharField(required=False, label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'UID Nummer'}))
-    tel = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Telefon Nummer'}))
-
-    def __init__(self, *args, **kwargs):
-        super(BestellungForm, self).__init__(*args, **kwargs)
-        # Making location required
-        self.fields['firma'].required = False
-
+    firma = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Firma'}))
+    #vorname = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Vorname'}))
+    #nachnahme = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Nachname'}))
+    #email = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'E-Mail Adresse'}))
+    #adresse = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Adresse'}))
+    #plz = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'PLZ'}))
+    #stadt = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Stadt'}))
+    #land = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Produkt Name'}))
+    #tax_nr = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'UID Nummer'}))
+    #tel = forms.FileField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Telefon Nummer'}))
 
     class Meta:
         model = Bestellung
-        fields = 'firma', 'product', 'vorname', 'nachnahme', 'email', 'adresse', 'plz', 'stadt', 'land', 'tax_nr', 'tel',
+        fields = 'firma', 'product', #'vorname', 'nachnahme', 'email', 'adresse', 'plz', 'stadt', 'land', 'tax_nr', 'tel',
         widgets = {
+            #'description': forms.Textarea(attrs={"class": 'form-control', 'cols':30, 'rows':3, 'style': 'height: 20%;', 'placeholder':'Beschreibung'}),
             'product': HiddenInput(),
+            #'course': HiddenInput(),
         }
-        error_messages = {
-            'firma': {
-                'required': ("Application field is required"),
-            },
-            }
