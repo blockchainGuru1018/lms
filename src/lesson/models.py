@@ -10,7 +10,7 @@ class DatefieldBaseModel(models.Model):
     update = models.DateTimeField(auto_now=True)
     create = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField()
-    
+
     class Meta:
         abstract = True
 
@@ -24,17 +24,17 @@ class LessonManager(models.QuerySet):
 class Lesson(DatefieldBaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=120)
-    
-    link_url = models.URLField(null=False, blank=False)
+    time = models.TimeField(blank=True, null=True, default='00:00:00')
+    link_url = models.URLField(null=False, blank=False, default=True)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, null=True, max_length=1024)
-    
+
     def __str__(self):
         return self.name
 
     class Meta():
         ordering = ['order']
-    
+
     objects = LessonManager.as_manager()
 
 
@@ -52,7 +52,7 @@ class LessonVenueManager(models.QuerySet):
 
     def filter_active(self):
         return self.filter(is_active=True)
-    
+
     def filter_available(self):
         """ active and not sent"""
         qs = self.filter_active()
@@ -61,7 +61,7 @@ class LessonVenueManager(models.QuerySet):
                 venure=OuterRef('pk')))
             ))
         qs = qs.filter(is_sent=False)
-        
+
         return qs
 
 
@@ -69,14 +69,14 @@ class LessonVenue(DatefieldBaseModel):
     participations = models.ManyToManyField("course.Participation",
                                         related_name='lesson_venues')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default='1')
-    
+
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return '{}'.format(self.lesson)
-    
+
     objects = LessonVenueManager.as_manager()
-    
+
     @classmethod
     def send_student_active_lesson(cls, pk):
         model = get_object_or_404(cls, pk=pk)
@@ -92,7 +92,7 @@ class LessonVenue(DatefieldBaseModel):
             participation.user.send_available_lesson_email(
                 self.lesson, participation.course
                 )
-        
+
         self.sent_venues.create(venure=self)
 
 
@@ -100,7 +100,6 @@ class SentLessonVenue(DatefieldBaseModel):
     venure = models.ForeignKey(LessonVenue,
                                related_name='sent_venues',
                                on_delete=models.CASCADE, default='1')
-    
+
     def __str__(self):
         return f'sent venuue {self.pk}'
-            

@@ -21,6 +21,7 @@
 
       {% include "navbar.html" %}
 
+      {% block csspage %}{% endblock %}
 
       <!-- BEGIN: Main Menu-->
       <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
@@ -63,25 +64,22 @@
           <div class="shadow-bottom"></div>
           <div class="main-menu-content">
               <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="">
-                  <li class=" nav-item"><a href="../../../html/ltr/vertical-menu-boxicons-template/index.html"><i class="bx bx-home-alt"></i><span class="menu-title text-truncate" data-i18n="">Dashboard</span></a>
+                  <li class=" nav-item">
+                    <a href="{% url 'course:course_list' %}">
+                      <i class="bx bx-receipt"></i><span class="menu-title text-truncate" data-i18n="Documentation">Kurse</span>
+                    </a>
                   </li>
-                  <li class=" nav-item"><a href="#"><i class="bx bx-building"></i><span class="menu-title text-truncate" data-i18n="Starter kit">Starter kit</span></a>
-                      <ul class="menu-content">
-                          <li><a class="d-flex align-items-center" href="../../../starter-kit/ltr/vertical-menu-boxicons-template/sk-layout-1-column.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate" data-i18n="1 column">1 column</span></a>
-                          </li>
-                          <li><a class="d-flex align-items-center" href="../../../starter-kit/ltr/vertical-menu-boxicons-template/sk-layout-2-columns.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate" data-i18n="2 columns">2 columns</span></a>
-                          </li>
-                          <li><a class="d-flex align-items-center" href="../../../starter-kit/ltr/vertical-menu-boxicons-template/sk-layout-fixed-navbar.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate" data-i18n="Fixed navbar">Fixed navbar</span></a>
-                          </li>
-                          <li class="active"><a class="d-flex align-items-center" href="../../../starter-kit/ltr/vertical-menu-boxicons-template/sk-layout-fixed.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate" data-i18n="Fixed layout">Fixed layout</span></a>
-                          </li>
-                          <li><a class="d-flex align-items-center" href="../../../starter-kit/ltr/vertical-menu-boxicons-template/sk-layout-static.html"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate" data-i18n="Static layout">Static layout</span></a>
-                          </li>
-                      </ul>
+                  <li class="nav-item">
+                    <a href="{% url 'shopping:product_list' %}">
+                      <i class="bx bxl-product-hunt"></i>
+                      <span class="menu-title text-truncate" data-i18n="Raise Support">Produkte</span>
+                    </a>
                   </li>
-                  <li class=" nav-item"><a href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/documentation" target="_blank"><i class="bx bx-folder"></i><span class="menu-title text-truncate" data-i18n="Documentation">Documentation</span></a>
-                  </li>
-                  <li class=" nav-item"><a href="https://pixinvent.ticksy.com/" target="_blank"><i class="bx bx-purchase-tag-alt"></i><span class="menu-title text-truncate" data-i18n="Raise Support">Raise Support</span></a>
+                  <li class=" nav-item">
+                    <a href="{% url 'settings:settings_dashboard' %}">
+                      <i class="bx bx-slider"></i>
+                      <span class="menu-title text-truncate" data-i18n="Raise Support">Einstellungen</span>
+                    </a>
                   </li>
               </ul>
           </div>
@@ -103,3 +101,4 @@
     <!--footer-->
     {% include "footer.html" %}
     <!--./footer-->
+    {% block jspage %}{% endblock %}

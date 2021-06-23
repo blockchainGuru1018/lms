@@ -12,9 +12,11 @@ class LessonForm(ModelForm):
     order = forms.CharField(label='', required=True, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Reihenfolgenummer'}))
     link_url = forms.CharField(label='', required=False, widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Viemo link'}))
     description = forms.CharField(label='', required=False, widget=forms.Textarea(attrs={"class": 'form-control', 'style': 'height: 20%;', 'placeholder':'Beschreibung','rows': 4, 'cols': 40}))
+    #time = forms.TimeField(label='', required=False, widget=forms.TimeInput(attrs={"class": 'form-control', 'placeholder':'Viemo link', format='%H:%M'}))
+    time = forms.TimeField(widget=forms.TimeInput(attrs={"class": 'form-control', 'placeholder':'00:00'}, format='%H:%M'))
     class Meta:
         model = Lesson
-        fields = 'category', 'name', 'order', 'link_url', 'is_active', 'description',
+        fields = 'category', 'name', 'order', 'link_url', 'is_active', 'description','time',
         widgets = {
             'category': HiddenInput(),
         }
