@@ -7,6 +7,7 @@ from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import RegisterForm
+from django.views.generic.list import ListView
 
 from django.contrib.auth.views import LoginView
 from django.views.generic.detail import DetailView
@@ -38,3 +39,8 @@ class LogoutView(View, LoginRequiredMixin):
     def get(self, request):
         logout(request)
         return redirect('/')
+
+
+class UserList(ListView):
+    template_name = 'user_list.html'
+    model = UserProfile
