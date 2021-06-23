@@ -2,9 +2,9 @@
 
 {% block content %}
 
+    <section class="page-user-profile">
 
-
-    <div class="col-md-12">
+    <div class="content-header row">
 
       {% if messages %}
         <div class="alert alert-success" role="alert">
@@ -14,52 +14,73 @@
         </div>
       {% endif %}
 
-      <div class="card">
-        <img src="{{ course.img.url }}" class="card-img-top" style="height: 320;">
-        <div class="card-body">
-          <h5 class="card-title">{{ course.name }}</h5>
-          <p>{% if course.descriptione == True %} {% else %} {{ course.description|truncatewords:30 }} {% endif %}</p>
-          <a href="{% url 'course:course_update' course.id %}" class="btn btn-light glow">{{ course.name }} edit</a>
-          <a href="{% url 'course:course_deletet' course.id %}" class="btn btn-danger glow">{{ course.name }} Delete</a>
+    </div>
+
+    <!-- user profile heading section start -->
+    <div class="card">
+        <div class="user-profile-images">
+            <!-- user timeline image -->
+            <img src="{{ course.img.url }}" class="img-fluid rounded-top user-timeline-image" alt="user timeline image" style="max-height:350px; width:100%;">
         </div>
-        <div class="card-footer text-muted">
-          <small>Erstellt von: {{ course.owner.full_name }} | Erstellt am: {{ course.update }}</small>
+        <!-- user profile nav tabs start -->
+        <div class="card-body px-30">
+            <a href="{% url 'course:course_update' course.id %}" type="button" class="btn btn-light-primary btn-icon mr-1 mb-1"><i class="bx bx-pencil"></i> Bearbeiten</a>
+            <a href="{% url 'course:course_deletet' course.id %}" type="button" class="btn btn-light-danger mr-1 mb-1"><i class="bx bx-trash-alt"></i> Danger</a>
+            <p class="card-text">{% if course.descriptione == True %} {% else %} {{ course.description|truncatewords:30 }} {% endif %}</p>
         </div>
-      </div>
-
-      <div class="mt-n2"></div>
-
-      <div class="card">
-        <div class="card-body">
-
-
-          <form method="post" style="margin-top: 3px;" class="row row-cols-lg-auto g-3 align-items-center">{% csrf_token %}
-            <div class="col-12">
-                {{ categoryform.titel }}
-              </div>
-
-
-            <div class="col-12">
-              {{ categoryform.order }}
-            </div>
-
-            <div class="col-12">
-              {{ categoryform.description }}
-
-            </div>
-              <span id="div"></span>
-
-            <div class="col-12">
-              <input type=hidden name="course" value="{{ course.id }}">
-              <input class="save_content_btn btn btn-primary glow" name="categoryform" type="Submit" value="{{ btn_title }}"/>
-            </div>
-          </form>
+        <div class="card-footer d-flex justify-content-between">
+          <span>Erstellt von: {{ course.owner.full_name }} | Erstellt am: {{ course.update }}</span>
 
         </div>
-      </div>
+    </div>
+    <!-- user profile heading section ends -->
 
 
-      <div class="mt-n1"></div>
+
+
+    <!-- Basic multiple Column Form section start -->
+                    <section id="multiple-column-form">
+                        <div class="row match-height">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 style="margin-bottom:30px;" class="card-title">Multiple Column</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form">{% csrf_token %}
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                            {{ categoryform.titel }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                            {{ categoryform.order }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                          {{ categoryform.description }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex justify-content-end">
+                                                      <input type=hidden name="course" value="{{ course.id }}">
+                                                      <input class="save_content_btn btn btn-primary mr-1" name="categoryform" type="Submit"/>
+
+                                                        <button type="reset" class="btn btn-light-secondary">Reset</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Basic multiple Column Form section end -->
+
 
       <div class="card">
         <div class="card-body card-body-padding">
@@ -109,8 +130,10 @@
         </div><!--card body ./-->
       </div><!--card ./-->
 
-    </div>
 
+
+
+</section>
 
 
 

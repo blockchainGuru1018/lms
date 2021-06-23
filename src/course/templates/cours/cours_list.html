@@ -1,45 +1,55 @@
 {% extends "basic.html" %}
+
 {% block content %}
+              <div class="content-header row">
 
+              </div>
 
-  <div class="col-md-12">
-   <div class="card">
-    <div class="card-header">
-      Featured
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Erstelle dein Kurs</h5>
-      <p class="card-text"></p>
-      <a href="{% url 'course:course_create' %}" class="btn btn-primary glow">Kurs Erstellen</a>
-    </div>
-   </div>
-  </div>
+              <div class="invoice-create-btn mb-1">
+                  <a href="{% url 'course:course_create' %}" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true">Kurs Erstelln</a>
+              </div>
 
-  <div class="col-md-12">
-    <div class="row">
-      {% for object in course_list %}
-      <div class="col-xl-3 col-md-6 col-sm-12">
-        <div class="card">
-          <img src="{{ object.img.url }}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ object.name }}</h5>
-            <p class="card-text">{{ object.description|truncatewords:20 }}</p>
-            <p class="card-text"><small class="text-muted">{{ object.owner.full_name }} </small></p>
-            <a href="#" class="btn btn-primary glow">Kaufen</a>
-          </div>
-          <div class="card-footer">
-
-            <ul class="list_">
-              <li><a href="{% url 'course:course_update' object.id %}"><i class="fas fa-marker"></i></a></li>
-              <li><a href="{% url 'course:course_deletet' object.id %}"><i class="far fa-trash-alt"></i></a></li>
-              <li><a href="{% url 'course:course_material' object.id %}"><i class="far fa-edit"></i></a></li>
-            </ul>
-
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  {% endblock %}
+                <!-- table success start -->
+                <section id="table-success">
+                    <div class="card">
+                        <!-- datatable start -->
+                        <div class="table-responsive">
+                            <table id="table-extended-success" class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>campaign</th>
+                                        <th>account details</th>
+                                        <th>category</th>
+                                        <th>amount</th>
+                                        <th>status</th>
+                                        <th>action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for object in course_list %}
+                                    <tr>
+                                        <td class="text-bold-600 pr-0"><img class="rounded-circle mr-1" src="{{ object.img.url }}" width="30px" height="30px" alt="card">{{ object.name }}</td>
+                                        <td>{{ object.description|truncatewords:20 }}</td>
+                                        <td class="text-bold-600"><i class="text-bold-600 bx bx-music mr-50"></i><span>{{ object.description|truncatewords:20 }}</span>
+                                        </td>
+                                        <td class="text-bold-600">$1,934</td>
+                                        <td class="text-success">Success!</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{% url 'course:course_material' object.id %}"><i class="bx bx-edit-alt mr-1"></i> Bearbeiten</a>
+                                                    <a class="dropdown-item" href="{% url 'course:course_deletet' object.id %}"><i class="bx bx-trash mr-1"></i> Löschen</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- datatable ends -->
+                    </div>
+                </section>
+                <!-- table success ends -->
+{% endblock %}
