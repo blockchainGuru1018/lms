@@ -20,31 +20,7 @@
                         <a href="{% url 'shopping:product_create' %}" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true">Neuen Kurs Erstellen</a>
                         <a href="{% url 'shopping:product_create' %}" class="btn btn-icon btn-outline-primary btn-icon" role="button" aria-pressed="true"><i class="bx bx-show-alt"></i> Shop</a>
                     </div>
-                    <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-filter-action">
-                            <button class="btn border dropdown-toggle mr-1" type="button" id="invoice-filter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Filter Invoice
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-filter-btn">
-                                <a class="dropdown-item" href="javascript:;">Downloaded</a>
-                                <a class="dropdown-item" href="javascript:;">Sent</a>
-                                <a class="dropdown-item" href="javascript:;">Partial Payment</a>
-                                <a class="dropdown-item" href="javascript:;">Paid</a>
-                            </div>
-                        </div>
-                        <div class="dropdown invoice-options">
-                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                <a class="dropdown-item" href="javascript:;">Delete</a>
-                                <a class="dropdown-item" href="javascript:;">Edit</a>
-                                <a class="dropdown-item" href="javascript:;">View</a>
-                                <a class="dropdown-item" href="javascript:;">Send</a>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
                             <thead>
@@ -52,43 +28,49 @@
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <span class="align-middle">Invoice#</span>
+                                        <span class="align-middle">Produkt Name</span>
                                     </th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                    <th>Customer</th>
+                                    <th>Kurs Name</th>
+                                    <th>Preis</th>
+                                    <th>Erstellt am</th>
                                     <th>Tags</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                              {% for object in product_list %}
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <a href="app-invoice.html">INV-00956</a>
+                                        {{ object.title }}
                                     </td>
-                                    <td><span class="invoice-amount">$459.30</span></td>
-                                    <td><small class="text-muted">12-08-19</small></td>
-                                    <td><span class="invoice-customer">Pixinvent PVT. LTD</span></td>
+                                    <td><span class="invoice-amount">{{ object.course }}</span></td>
+                                    <td>{{ object.preis }}</td>
+                                    <td><span class="invoice-customer">{{ object.timestamp }}</span></td>
                                     <td>
                                         <span class="bullet bullet-success bullet-sm"></span>
                                         <small class="text-muted">Technology</small>
                                     </td>
-                                    <td><span class="badge badge-light-danger badge-pill">UNPAID</span></td>
+                                    <td>
+                                      {% if free_active is False %} false
+                                      <span class="badge badge-light-secondary">Free</span>
+                                      {% endif %}
+                                      <span class="badge badge-light-primary">Pay</span>
+                                    </td>
                                     <td>
                                         <div class="invoice-action">
-                                            <a href="app-invoice.html" class="invoice-action-view mr-1">
+                                            <a href="{% url 'shopping:product_detail' object.id %}" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-invoice-edit.html" class="invoice-action-edit cursor-pointer">
+                                            <a href="{% url 'shopping:product_update' object.id %}" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
-
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -97,30 +79,6 @@
 
 
 
-  <div class="col-md-12">
-    <div class="row">
-      {% for object in product_list %}
-      <div class="col-xl-3 col-md-6 col-sm-12">
-        <div class="card">
-          <img src="" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ object.title }} | {{ object.course }}</h5>
-            <p class="card-text">{% autoescape off %}{{ object.description|truncatewords:20 }}{% endautoescape %}</p>
-            <p class="card-text"><small class="text-muted">{{ object.preis }} </small></p>
-          </div>
-          <div class="card-footer">
 
-            <ul class="list_">
-              <li><a href="{% url 'shopping:product_detail' object.id %}"><i class="fas fa-eye"></i></a></li>
-              <li><a href="{% url 'shopping:product_delete' object.id %}"><i class="far fa-trash-alt"></i></a></li>
-              <li><a href="{% url 'shopping:product_update' object.id %}"><i class="far fa-edit"></i></a></li>
-            </ul>
-
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
 
   {% endblock %}

@@ -8,29 +8,31 @@
 
 
 
+<div class="content-header row">
+</div>
 
 
-
-<div class="col-md-12">
-  <div class="row">
-    {% for object in product_list %}
-    <div class="col-xl-3 col-md-6 col-sm-12">
+<div class="row">
+  {% for object in product_list %}
+  <div class="col-md-3 col-sm-6 mb-sm-1">
       <div class="card">
-        <img src="{{ object.img.url }}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{ object.title }} | {{ object.course }}</h5>
-          <p class="card-text">{% autoescape off %}{{ object.description }}{% endautoescape %}</p>
-          <p class="card-text"><small class="text-muted">{{ object.preis }} </small></p>
+        <img class="card-img-top img-fluid" src="{{ object.img.url }}" alt="Card image cap">
+        <div class="card-header">
+          <h4 class="card-title">{{ object.title }}</h4>
         </div>
-        <a href="{% url 'shopping:shop_detaile' object.id %}" class="btn btn-primary">Kaufen</a>
-        <div class="card-footer">
-
+        <div class="card-body">
+          <p class="card-text">
+            {% autoescape off %}{{ object.description }}{% endautoescape %}
+          </p>
+          <p class="card-text">{{ object.preis }}</p>
+          <a href="{% url 'shopping:shop_detaile' object.id %}" class="btn btn-outline-primary">Go somewhere</a>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
-</div>
+
+
 
 {% endblock %}
 <!--./Content -->

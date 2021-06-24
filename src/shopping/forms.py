@@ -13,13 +13,19 @@ class ProductForm(ModelForm):
     preis = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Preis'}))
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     #preis = forms.FileField(label='', required=False, widget=forms.FileInput(attrs={"class": 'form-control', "type":'file'}))
+    #active = forms.BooleanField(label='', widget=forms.BooleanField(attrs={"class": 'custom-control-input'}))
+    #active = CheckboxInput(attrs={'class':'custom-control-input'}))
+    #active = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class':'custom-control-input', 'id':'customCheck1'}))
+
+
 
     class Meta:
         model = Product
-        fields = 'title', 'preis', 'description', 'course', 'img',
+        fields = 'title', 'preis', 'description', 'course', 'img', 'active', 'free_active'
         widgets = {
             'description': forms.Textarea(attrs={"class": 'form-control', 'cols':30, 'rows':3, 'style': 'height: 20%;', 'placeholder':'Beschreibung'}),
             'user': HiddenInput(),
+            #'img': forms.FileInput(attrs={'class': 'fileUpload'}),
             #'course': HiddenInput(),
         }
 
@@ -45,7 +51,7 @@ class BestellungForm(ModelForm):
     class Meta:
         model = Bestellung
         fields = 'firma', 'vorname', 'nachnahme', 'email', 'adresse', 'plz', 'stadt', 'land', 'tax_nr', 'tel',
-        
+
         error_messages = {
             'firma': {
                 'required': ("Application field is required"),

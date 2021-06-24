@@ -2,37 +2,27 @@
 
 {% block content %}
 
+<div class="content-header row">
+</div>
 
-<div class="col-md-12">
-      {% if messages %}
-      <div class="alert alert-success" role="alert">
-        {% for message in messages %}
-          {{ message }}
-        {% endfor %}
-      </div>
-    {% endif %}
-    <div class="row">
+<div class="row justify-content-md-center">
+  <div class="col-md-6 col-sm-12">
       <div class="card">
-        <div class="card-header">
-          {{ object.course }}
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ object.title }}</h5>
-          <p class="card-text">{% autoescape off %}{{ object.description }}{% endautoescape %}</p>
-          <p class="card-text"><small class="text-muted">Erstellt:{{ object.timestamp }}</small></p>
-          <p>{{ object.preis }} €</p>
-        </div>
-        <div class="card-footer text-muted">
-            Erstellt von: {{ object.user.full_name }}
-        </div>
+          <img class="card-img-top img-fluid" src="{{ object.img.url }}" alt="Card image cap" />
+          <div class="card-header">
+              <h4 class="card-title">{{ object.title }}</h4>
+          </div>
+          <div class="card-body">
+              <p class="card-text">
+                  {% autoescape off %}{{ object.description }}{% endautoescape %}
+              </p>
+              <p class="card-text">
+                  Erstellt von: {{ object.user.full_name }}
+              </p>
+              <a href="{% url 'shopping:product_list' %}" class="btn btn-primary block">Übersicht</a>
+          </div>
       </div>
-
-      <div class="card">
-        <div class="card-body">
-          <a href="{% url 'shopping:product_list' %}" class="btn btn-primary glow">Übersicht</a>
-        </div>
-      </div>
-    </div>
+  </div>
 </div>
 
 {% endblock %}
