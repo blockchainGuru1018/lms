@@ -145,3 +145,18 @@ class CategoryDeleteView(DeleteView):
     model = Category
     template_name = "category/category_delelet.html"
     success_url = reverse_lazy('/')
+
+#User Course
+class CourseUserSingleView(DetailView):
+    model = Course
+    template_name = "cours_user/cours_user_singel.html"
+
+
+    def get_object(self):
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(Course, pk=pk)
+        return obj
+
+#User view
+def user_view(request):
+    return render(request, 'cours_user/user_lesson_view.html')

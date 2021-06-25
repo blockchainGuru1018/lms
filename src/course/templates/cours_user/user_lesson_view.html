@@ -1,0 +1,86 @@
+{% extends "shop_user.html" %}
+{% load static %}
+
+{% block csspage %}
+<style media="screen">
+/* --------------------- */
+/* Responsive Layout Css */
+/* --------------------- */
+@media (min-width: 992px) {
+  body .content-right {
+    width: calc(100% - 360px);
+    float: right;
+    margin-top: 2rem;
+  }
+  .sidebar-right.sidebar-sticky {
+  float: left !important;
+  margin: 0;
+  width: 360px !important;
+  margin-top: 2rem;
+}
+}
+
+
+</style>
+{% endblock %}
+
+<!--Content-->
+{% block content %}
+
+        <div class="sidebar-right sidebar-sticky">
+            <div class="sidebar">
+                <div class="pr-2">
+                    <div class="sidebar-content component-sidebar p-1 affix" data-spy="affix" data-offset-top="-77">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">Components Navigation</h6>
+                            </div>
+                            <div class="card-content" aria-expanded="true">
+                                <div class="card-body">
+                                  <div class="list-group list-group-flush">
+                                    <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0 d-flex active">
+                                      <div class="list-icon">
+                                        <i class="badge-circle badge-circle-light-secondary bx bxl-twitter mr-1 text-primary"></i>
+                                      </div>
+                                      <div class="list-content">
+                                        <h5>Daily Updates</h5>
+                                        <p class="mb-0">
+                                          It won’t be a bigger problem to find one video game lover in great savings.
+                                        </p>
+                                      </div>
+                                    </a>
+                                  </div>
+                                </div>
+                                <h6 class="border-top-grey border-top-lighten-2 p-1 mt-1 mb-0">
+                                    <a class="nav-link display-block text-muted" href="#top">Back to top
+                                        <i class="float-right bx bx-up-arrow-circle font-medium-3"></i>
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+          </div>
+
+            <div class="content-right p-1">
+                <div class="content-body">
+                    <!-- Alert -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 id="alert" class="card-title">Alert</h4>
+                        </div>
+                        <div class="card-content collapse show" aria-expanded="true">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <p>Provide contextual feedback messages for typical user actions with the handful of available and flexible
+                                        alert messages.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+{% endblock %}

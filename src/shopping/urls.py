@@ -33,5 +33,5 @@ urlpatterns = [
     path('shop/success/<pk>/create-checkout-session', create_checkout_session, name='create_checkout_session'),
     path('shop/sripe-success/<pk>', SripeSuccessView.as_view(), name='stripe_success'),
     path('shop/sripe-cancel/<pk>', SripeCancelView.as_view(), name='stripe_cancel'),
-    
+
 ]

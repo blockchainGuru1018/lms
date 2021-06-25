@@ -25,6 +25,7 @@
           </p>
           <p class="card-text">{{ object.preis }}</p>
           <a href="{% url 'shopping:shop_detaile' object.id %}" class="btn btn-outline-primary">Go somewhere</a>
+          <a href="{% url 'course:course_user_single' object.course.id %}" class="btn btn-outline-primary">Go</a>
         </div>
       </div>
     </div>
