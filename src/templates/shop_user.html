@@ -36,8 +36,48 @@
   <!-- END: Custom CSS-->
 </head>
 
-<div class="col-md-10 offset-md-1">
+<body class="vertical-layout vertical-menu-modern 1-column navbar-sticky footer-static" data-col="1-column" data-menu="vertical-menu-modern" >
+
+  <!-- Fixed-top-->
+  <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top navbar-light navbar-shadow">
+    <div class="navbar-wrapper">
+      <div class="navbar-container content">
+        <div class="navbar-collapse" id="navbar-mobile-3">
+          <ul class="nav navbar-nav left-menu mr-auto float-left">
+            <li class="nav-item mobile-menu d-lg-none mr-auto">
+              <a class="nav-link nav-menu-main hidden-xs menu-toggle is-active" href="javascript:void(0);">
+                <i class="ficon bx bx-menu"></i>
+              </a>
+            </li>
+            <li class="nav-item d-none d-lg-block">
+              <a class="nav-link navbar-brand" href="javascript:void(0);">
+                <span>Navbar</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav float-right right-menu align-items-center">
+            <li class="nav-item">
+              <a class="nav-link py-0" href="javascript:void(0);">
+                <div class="btn btn-icon btn-sm btn-primary glow">
+                  <span class="d-none d-sm-block">Download</span>
+                  <i class="d-sm-none d-block bx bx-cloud-download"></i>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
   <!--Content-->
-  {% block content %}{% endblock %}
+  <div class="app-content content">
+    <div class="content-wrapper">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
   <!--./Content -->
-</div>
+
+</body>
+
+{% include "footer.html" %}

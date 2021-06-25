@@ -1,4 +1,4 @@
-{% extends "shop.html" %}
+{% extends "shop_user.html" %}
 {%block extra_head%}
 <script src="//js.stripe.com/v3/" ></script>
 {%include 'shop/includes/product_image_css.html' with object=object %}
@@ -27,7 +27,7 @@
       <div class="card-body">
 
           <h4 class="mb-3">Payment cancelled</h4>
-            
+
           <p>
       Sorry, but payment was cancelled.
       If you have any questions, please email

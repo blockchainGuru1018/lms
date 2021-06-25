@@ -38,7 +38,7 @@ class BestellungForm(ModelForm):
     adresse = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Adresse'}))
     plz = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'PLZ'}))
     stadt = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Stadt'}))
-    land = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Produkt Name'}))
+    land = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Land'}))
     tax_nr = forms.CharField(required=False, label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'UID Nummer'}))
     tel = forms.CharField(label='', widget=forms.TextInput(attrs={"class": 'form-control', 'placeholder':'Telefon Nummer'}))
 

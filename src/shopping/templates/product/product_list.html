@@ -13,13 +13,15 @@
 
                     <div class="content-header row">
                     </div>
+
                     <div class="content-body">
                     <section class="invoice-list-wrapper">
                     <!-- create invoice button-->
                     <div class="invoice-create-btn mb-1">
                         <a href="{% url 'shopping:product_create' %}" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true">Neuen Kurs Erstellen</a>
-                        <a href="{% url 'shopping:product_create' %}" class="btn btn-icon btn-outline-primary btn-icon" role="button" aria-pressed="true"><i class="bx bx-show-alt"></i> Shop</a>
+                        <a href="{% url 'shopping:shop_list' %}" class="btn btn-icon btn-outline-primary btn-icon" role="button" aria-pressed="true"><i class="bx bx-show-alt"></i> Shop</a>
                     </div>
+
 
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
@@ -33,7 +35,7 @@
                                     <th>Kurs Name</th>
                                     <th>Preis</th>
                                     <th>Erstellt am</th>
-                                    <th>Tags</th>
+
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -49,10 +51,6 @@
                                     <td><span class="invoice-amount">{{ object.course }}</span></td>
                                     <td>{{ object.preis }}</td>
                                     <td><span class="invoice-customer">{{ object.timestamp }}</span></td>
-                                    <td>
-                                        <span class="bullet bullet-success bullet-sm"></span>
-                                        <small class="text-muted">Technology</small>
-                                    </td>
                                     <td>
                                       {% if free_active is False %} false
                                       <span class="badge badge-light-secondary">Free</span>
