@@ -1,9 +1,13 @@
+import logging
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.mail import send_mail
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
+
+logger = logging.getLogger(__name__)
 
 
 class UserManager(BaseUserManager):
@@ -92,6 +96,7 @@ class UserProfile(AbstractBaseUser):
         abstract = False
     
     TPL_DIR = 'accounts/emails/new_users'
+    LESSON_TPL_DIR = 'accounts/emails/lessons'
     
     def email_send(self, subject, body):
         send_mail(subject, body, settings.EMAIL_HOST_USER, [self.email])
@@ -112,4 +117,19 @@ class UserProfile(AbstractBaseUser):
             )
         
         self.email_send(subject, body)
-
+        
+    def send_available_lesson_email(self, lesson, course):
+        """send available lesson for this student"""
+        payload = dict(user=self, lesson=lesson, course=course)
+        logger.info(f'send_available_lesson_email user:{self.email}...')
+        subject = render_to_string(
+            f'{self.LESSON_TPL_DIR}/subject.html',
+            payload
+            )
+        body = render_to_string(
+            f'{self.LESSON_TPL_DIR}/body.html',
+            payload
+            )
+        
+        self.email_send(subject, body)
+        logger.info(f'send_available_lesson_email done.')
