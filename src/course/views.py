@@ -19,6 +19,8 @@ from .models import Category, Course
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.http.response import Http404
+
 
 ##### -------- Cours -------- #####
 class CourseUpdateView(UpdateView):
@@ -33,11 +35,12 @@ class CourseUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
-        #form = CourseForm(request.POST, request.FILES)
+        # form = CourseForm(request.POST, request.FILES)
         form.instance.user_id = self.request.user
         form.instance.display_name = form.cleaned_data['name']
         form.save()
         return super(CourseUpdateView, self).form_valid(form)
+
 
 class CourseDeleteView(DeleteView):
     model = Course
@@ -52,7 +55,7 @@ class CourseListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['now'] = timezone.now()
+        # context['now'] = timezone.now()
         return context
 
 
@@ -60,7 +63,7 @@ class CourseCreateView(CreateView):
     model = Course
     template_name = 'cours/cours_creat.html'
     form_class = CourseForm
-    #success_message = "%(name)s was created successfully"
+    # success_message = "%(name)s was created successfully"
 
     def get_context_data(self, **kwargs):
         context = super(CourseCreateView, self).get_context_data(**kwargs)
@@ -69,14 +72,11 @@ class CourseCreateView(CreateView):
         return context
 
     def form_valid(self, form):
-        #form = CourseForm(request.POST, request.FILES)
+        # form = CourseForm(request.POST, request.FILES)
         form.instance.user_id = self.request.user
         form.instance.display_name = form.cleaned_data['name']
         form.save()
         return super(CourseCreateView, self).form_valid(form)
-
-
-
 
 
 class CourseMaterialView(SuccessMessageMixin, View):
@@ -86,8 +86,8 @@ class CourseMaterialView(SuccessMessageMixin, View):
     def get_object(self):
         try:
             obj = Course.objects.get(pk=self.kwargs['pk'])
-        except Question.DoesNotExist:
-            raise Http404('Question not found!')
+        except Course.DoesNotExist:
+            raise Http404('Course not found!')
         return obj
 
     def get_context_data(self, **kwargs):
@@ -103,29 +103,31 @@ class CourseMaterialView(SuccessMessageMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.get_context_data())
 
-
     def post(self, request, *args, **kwargs):
             ctxt = {}
-
+            
             if 'categoryform' in request.POST:
                 categoryform = CategoryForm(request.POST, request.FILES)
                 if categoryform.is_valid():
-                    #categoryform = form.save(commit=False)
+                    # categoryform = form.save(commit=False)
                     categoryform.save()
-                    #success_message = 'Your name has been changed.'
+                    # success_message = 'Your name has been changed.'
                     messages.add_message(request, messages.INFO, 'wurde erfolgreich erstellt')
                 else:
-                    ctxt['lessonform'] = lessonform
+                    ctxt['lessonform'] = categoryform
 
             elif 'lessonform' in request.POST:
 
                 if request.method == "POST":
                     form = LessonForm(request.POST, request.FILES)
                     if form.is_valid():
-                        form = form.save(commit=False)
-                        form.save()
+                        lesson = form.save(commit=False)
+                        lesson.course = self.get_object()
+                        lesson.save()
                         messages.add_message(request, messages.INFO, 'wurde erfolgreich erstellt')
-
+                    else:
+                        print('form error:', form.errors)
+                        
             return render(request, self.template_name, self.get_context_data(**ctxt))
 
 
@@ -146,17 +148,18 @@ class CategoryDeleteView(DeleteView):
     template_name = "category/category_delelet.html"
     success_url = reverse_lazy('/')
 
-#User Course
+
+# User Course
 class CourseUserSingleView(DetailView):
     model = Course
     template_name = "cours_user/cours_user_singel.html"
-
 
     def get_object(self):
         pk = self.kwargs.get("pk")
         obj = get_object_or_404(Course, pk=pk)
         return obj
 
-#User view
+
+# User view
 def user_view(request):
     return render(request, 'cours_user/user_lesson_view.html')

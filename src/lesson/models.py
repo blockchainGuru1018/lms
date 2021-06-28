@@ -28,7 +28,8 @@ class Lesson(DatefieldBaseModel):
     link_url = models.URLField(null=False, blank=False, default=True)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, null=True, max_length=1024)
-
+    time = models.TimeField(blank=True, null=True)
+    
     def __str__(self):
         return self.name
 

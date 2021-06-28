@@ -8,7 +8,24 @@
 
 <script type="text/javascript">
   $(function () {
-  $('[data-toggle="popover"]').popover()
+  	$('[data-toggle="popover"]').popover();
+  
+  
+	$('.btn-save-lesson').on('click', function(e){
+		const tr = $(this).closest('tr');
+		const form = $('form[name="form-lesson"]');
+		tr.find("input").each(function(){
+			const i = $(this);
+			const v = $(this).val();
+			
+			const name = i.attr('name');
+			form.find('input[name="' + name + '"]').val(v);
+		    
+		});
+		console.log('for data:', form.serialize());
+		form.submit();
+	});
+  
 })
 </script>
 
@@ -66,7 +83,7 @@
                                         <h4 style="margin-bottom:30px;" class="card-title">Kategorie</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form class="form">{% csrf_token %}
+                                        <form class="form" method=post>{% csrf_token %}
                                             <div class="form-body">
                                                 <div class="row">
                                                     <div class="col-md-6 col-12">
@@ -152,19 +169,30 @@
                                                             </td>
                                                         </tr>
                                                         {% endfor %}
-                                                        <tr>
-                                                        <form method="post">{% csrf_token %}
+                                                        
+                                                        <tr id="{{ course.id }}">
+                                                        
                                                           <td>{{ lessonform.name }}</td>
                                                           <td>{{ lessonform.order }}</td>
                                                           <td>{{ lessonform.time }}</td>
                                                           <td colspan="1">{{ lessonform.link_url }}</td>
-                                                          <td><input class="save_content_btn btn btn-primary" name="lessonform" type="Submit" value="Lektion hinzufühgen"/></td>
-                                                          <input type=hidden name="category" value="{{ course.id }}">
-                                                        </form>
+                                                          <td><input class="save_content_btn btn btn-primary btn-save-lesson" name="lessonform" type="Submit" value="Lektion hinzufühgen"/></td>
+                                                          
+                                                        	<input type=hidden name="category" value="{{course.pk}}">
                                                         </tr>
+                                                        
                                                     </tbody>
                                                     {% endfor %}
                                                 </table>
+                                                <form name="form-lesson" method="post">
+                                                {% csrf_token %}
+                                                <input type=hidden name="name" value="">
+                                                <input type=hidden name="order" value="">
+                                                <input type=hidden name="time" value="">
+                                                <input type=hidden name="link_url" value="">
+                                                <input type=hidden name="lessonform" value="1">
+                                                <input type=hidden name="category" value="">
+                                                </form>
                                                 <!-- table ends -->
                                             </div>
                                         </div>
