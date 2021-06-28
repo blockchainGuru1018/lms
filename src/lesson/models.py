@@ -36,8 +36,6 @@ class Lesson(DatefieldBaseModel):
     class Meta():
         ordering = ['order']
 
-    objects = LessonManager.as_manager()
-
 
 class Lecture(models.Model):
     name = models.CharField(max_length=150)
@@ -78,6 +76,14 @@ class LessonVenue(DatefieldBaseModel):
 
     objects = LessonVenueManager.as_manager()
 
+    @classmethod
+    def get_student_available_lesson(cls, student):
+        qs = cls.objects
+        qs = qs.filter(participations__user=student)
+        qs = qs.filter(lesson__is_active=True)
+        qs = qs.select_related('lesson')
+        return qs.order_by('order',)
+    
     @classmethod
     def send_student_active_lesson(cls, pk):
         model = get_object_or_404(cls, pk=pk)

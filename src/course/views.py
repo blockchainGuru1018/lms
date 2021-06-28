@@ -14,12 +14,13 @@ from django.views.generic import View
 
 from .forms import *
 from lesson.forms import LessonForm
-from lesson.models import Lesson
+from lesson.models import Lesson, LessonVenue
 from .models import Category, Course
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.http.response import Http404
+from django.contrib.auth.decorators import login_required
 
 
 ##### -------- Cours -------- #####
@@ -161,5 +162,17 @@ class CourseUserSingleView(DetailView):
 
 
 # User view
-def user_view(request):
-    return render(request, 'cours_user/user_lesson_view.html')
+@login_required
+def user_view(request, lesson_id=None):
+    lessons = LessonVenue.get_student_available_lesson(request.user)
+    current_lesson_qs = lessons
+    if lesson_id:
+        current_lesson_qs = lessons.filter(pk=lesson_id)
+    current_lesson = current_lesson_qs.first()
+    if not current_lesson:
+        Http404('Not available lesson yet!')
+        
+    return render(request,
+                  'cours_user/user_lesson_view.html',
+                  {'lessons': lessons,
+                   'current_lesson': current_lesson})
