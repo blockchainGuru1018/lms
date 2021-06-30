@@ -178,7 +178,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
-# LOGIN_REDIRECT_URL = 'accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_my_proj"),
