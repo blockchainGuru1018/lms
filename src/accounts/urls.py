@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import SignUpView, LoginView, LogoutView, DashboardView
+from .views import UserList
 
 app_name = 'accounts'
 
