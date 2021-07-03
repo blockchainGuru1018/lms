@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import logout
 
 # Create your views here.
-from django.views.generic.base import View, TemplateView
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView
 
 from .forms import RegisterForm

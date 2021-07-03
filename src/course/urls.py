@@ -14,6 +14,7 @@ urlpatterns = [
     path('category/update/<pk>/', CategoryUpdateView.as_view(), name='category_update'),
     path('category/deletet/<pk>/', CategoryDeleteView.as_view(), name='category_deletet'),
     # User View
-    path('view/lesson/', user_view, name='course_user_lesson'),
-    path('view/cours/<pk>/', CourseUserSingleView.as_view(), name='course_user_single'),
+    path('view/lesson/<lesson_id>/', user_view, name='user_lesson_single'),
+    path('view/lesson/', user_view, name='user_lesson'),
+    path('view/cours/<pk>/', CourseUserSingleView.as_view(), name='user_single'),
 ]

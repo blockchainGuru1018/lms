@@ -45,6 +45,14 @@ class Lecture(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @property
+    def display_photo(self):
+        # a wrapper to show default one if it is nto there
+        if self.photo:
+            return self.photo.url
+        
+        return "/media/lecture/img/placeholder.png"
 
 
 class LessonVenueManager(models.QuerySet):

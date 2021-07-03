@@ -1,0 +1,14 @@
+{% extends "basic.html" %}
+
+{% block content %}
+<h1>Login</h1>
+
+<form method="post" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+    <p>Username: <input type="text" name="username"></p>
+    <p>Passwoord: <input type="password" name="password"></p>
+    <button type="submit">Login</button>
+    <p>
+    <a href="{% url 'password_reset'%}">Forgot password</a></p>
+</form>
+{% endblock %}

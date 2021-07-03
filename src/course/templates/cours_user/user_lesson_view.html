@@ -39,8 +39,8 @@
                                 <div class="card-body">
                                   <div class="list-group list-group-flush">
                                   {% for lesson in lessons %}
-                                    <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0 d-flex {% if lesson == current_lesson%}active{%endif%}">
-                                     {{lesson.name}}
+                                    <a href="{% url 'course:user_lesson_single' lesson_id=lesson.pk %}" class="list-group-item list-group-item-action border-0 d-flex {% if lesson == current_lesson%}active{%endif%}">
+                                     {{lesson}}
                                     </a>
                                   {%endfor%}
                                   </div>
@@ -63,19 +63,19 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 id="alert" class="card-title">
-                            {{current_lesson.name}}
-                            <span class="badge badge-secondary">Time: {{current_lesson.time}}</span>
+                            {{current_lesson.lesson}}
+                            <span class="badge badge-secondary">Time: {{current_lesson.lesson.time}}</span>
                             </h4>
                         </div>
                         <div class="card-content collapse show" aria-expanded="true">
                             <div class="card-body">
                                 <div class="card-text">
-                                    <p>{{current_lesson.description}}</p>
+                                    <p>{{current_lesson.lesson.description}}</p>
                                     Lecture:
-                                    {%for lecture in current_lesson.lecture_set.all %}
+                                    {%for lecture in current_lesson.lesson.lecture_set.all %}
                                     
 	                                    <div class="card">
-										  <img class="card-img-top" src="{{lecture.photo}}" alt="{{lecture.name}}">
+										  <img class="card-img-top" src="{{lecture.display_photo}}" alt="{{lecture.name}}">
 										  <div class="card-body">
 										    <p class="card-text">{{lecture.description}}</p>
 										  </div>
