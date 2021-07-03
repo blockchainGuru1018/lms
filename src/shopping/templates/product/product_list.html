@@ -1,45 +1,82 @@
 {% extends "basic.html" %}
+{% load static %}
+
+{% block csspage %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-invoice.css' %}">
+{% endblock %}
+
+{% block jspage %}
+<script src="{% static 'app-assets/js/scripts/pages/app-invoice.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
+                    <div class="content-header row">
+                    </div>
 
-  <div class="col-md-12">
-   <div class="card">
-    <div class="card-header">
-      Featured
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Erstelle dein Kurs</h5>
-      <p class="card-text"></p>
-      <a href="{% url 'shopping:product_create' %}" class="btn btn-primary glow">Produkt erstellen</a>
-      <a href="{% url 'shopping:shop_list' %}" class="btn btn-primary glow">Shop</a>
-    </div>
-   </div>
-  </div>
+                    <div class="content-body">
+                    <section class="invoice-list-wrapper">
+                    <!-- create invoice button-->
+                    <div class="invoice-create-btn mb-1">
+                        <a href="{% url 'shopping:product_create' %}" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true">Neuen Kurs Erstellen</a>
+                        <a href="{% url 'shopping:shop_list' %}" class="btn btn-icon btn-outline-primary btn-icon" role="button" aria-pressed="true"><i class="bx bx-show-alt"></i> Shop</a>
+                    </div>
 
-  <div class="col-md-12">
-    <div class="row">
-      {% for object in product_list %}
-      <div class="col-xl-3 col-md-6 col-sm-12">
-        <div class="card">
-          <img src="" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ object.title }} | {{ object.course }}</h5>
-            <p class="card-text">{% autoescape off %}{{ object.description|truncatewords:20 }}{% endautoescape %}</p>
-            <p class="card-text"><small class="text-muted">{{ object.preis }} </small></p>
-          </div>
-          <div class="card-footer">
 
-            <ul class="list_">
-              <li><a href="{% url 'shopping:product_detail' object.id %}"><i class="fas fa-eye"></i></a></li>
-              <li><a href="{% url 'shopping:product_delete' object.id %}"><i class="far fa-trash-alt"></i></a></li>
-              <li><a href="{% url 'shopping:product_update' object.id %}"><i class="far fa-edit"></i></a></li>
-            </ul>
+                    <div class="table-responsive">
+                        <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
+                                        <span class="align-middle">Produkt Name</span>
+                                    </th>
+                                    <th>Kurs Name</th>
+                                    <th>Preis</th>
+                                    <th>Erstellt am</th>
 
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for object in product_list %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        {{ object.title }}
+                                    </td>
+                                    <td><span class="invoice-amount">{{ object.course }}</span></td>
+                                    <td>{{ object.preis }}</td>
+                                    <td><span class="invoice-customer">{{ object.timestamp }}</span></td>
+                                    <td>
+                                      {% if free_active is False %} false
+                                      <span class="badge badge-light-secondary">Free</span>
+                                      {% endif %}
+                                      <span class="badge badge-light-primary">Pay</span>
+                                    </td>
+                                    <td>
+                                        <div class="invoice-action">
+                                            <a href="{% url 'shopping:product_detail' object.id %}" class="invoice-action-view mr-1">
+                                                <i class="bx bx-show-alt"></i>
+                                            </a>
+                                            <a href="{% url 'shopping:product_update' object.id %}" class="invoice-action-edit cursor-pointer">
+                                                <i class="bx bx-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+
+
+
 
   {% endblock %}

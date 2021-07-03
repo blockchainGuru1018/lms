@@ -87,13 +87,13 @@ class ShopCreateView(CreateView):
 
     def get_success_url(self):
         return reverse ('shopping:shop_success_view', kwargs={'pk': self.object.pk})
-    
+
     def get_context_data(self, **kwargs):
         ctx = CreateView.get_context_data(self, **kwargs)
         ctx['object'] = self.get_product()
         ctx['form_neu'] = kwargs.get('form', self.form_class())
         return ctx
-    
+
     def get_product(self):
         pk = self.kwargs.get("pk")
         return get_object_or_404(Product, id=pk)
@@ -102,8 +102,9 @@ class ShopCreateView(CreateView):
         self.object = form.save(commit=False)
         self.product = self.get_product()
         form.save()
-        
+
         return redirect(self.get_success_url())
+
 
 
 # Stripe Store important data for billing
@@ -115,7 +116,7 @@ class ShopSuccessView(DetailView):
         ctx = DetailView.get_context_data(self, **kwargs)
         ctx['settings'] = settings
         return ctx
-    
+
     def get_object(self):
         pk = self.kwargs.get("pk")
         obj = get_object_or_404(Bestellung, pk=pk)
@@ -144,7 +145,7 @@ def create_checkout_session(request, pk):
     domain_url = request.tenant.domain_url
     scheme = request.scheme
     port = request.META.get('SERVER_PORT', 80)
-    
+
     data = {
         'payment_method_types': ['card'],
         'line_items': [{
@@ -173,7 +174,7 @@ def create_checkout_session(request, pk):
 class SripeCancelView(DetailView):
     queryset = Bestellung.objects.all()
     template_name = 'shop/stripe_failed.html'
-    
+
     def get_object(self):
         pk = self.kwargs.get("pk")
         obj = get_object_or_404(Bestellung, pk=pk)
@@ -187,7 +188,7 @@ class SripeSuccessView(SripeCancelView):
         self.object = self.get_object()
         # create user and send email in this
         # it will be an async call as
-        """ 
+        """
         create_user_after_checkout.apply_async(
             args=[self.object.pk]
             )

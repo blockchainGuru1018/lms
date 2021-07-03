@@ -1,44 +1,58 @@
+
+{% load static %}
 {% load  static cookielaw_tags %}
-<div class="mt-n1"></div>
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+
 {% cookielaw_banner %}
 <script src="{% static 'cookielaw/js/cookielaw.js'%}"></script>
-<h6 style="text-align: center;">footer</h6>
-
-<!-- Optional JavaScript; choose one of the two! -->
-
-<!-- Option 1: Bootstrap Bundle with Popper -->
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- Menu Toggle Script -->
-<script>
-  $("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-  });
-
-  var x = document.getElementById("id_description").maxLength;
-  var div = document.getElementById("div");
-
-  div.innerHTML = 0;
-
-  $("#id_description").keyup(function(event){
-    var valueSum =$(this).val();
-    chars = x - valueSum.length
-    $("#div").text(chars)
-  })
+<!-- BEGIN: Footer-->
+<footer class="footer fixed-footer footer-light">
+    <p class="clearfix mb-0"><span class="float-left d-inline-block">2021 &copy; Pixelwest</span><span class="float-right d-sm-inline-block d-none">Hergestellt mit<i class="bx bxs-heart pink mx-50 font-small-3"></i>by<a class="text-uppercase" href="https://www.pixel-west.com" target="_blank">Pixelwest</a></span>
+        <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="bx bx-up-arrow-alt"></i></button>
+    </p>
+</footer>
+<!-- END: Footer-->
 
 
-</script>
+<!-- BEGIN: Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/vendors.min.js' %}"></script>
+<script src="{% static 'app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js' %}"></script>
+<script src="{% static 'app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js' %}"></script>
+<script src="{% static 'app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/charts/apexcharts.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/moment.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/daterange/daterangepicker.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{% static 'app-assets/js/scripts/configs/vertical-menu-dark.js' %}"></script>
+<script src="{% static 'app-assets/js/core/app-menu.js' %}"></script>
+<script src="{% static 'app-assets/js/core/app.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/components.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/footer.js' %}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<!-- END: Page JS-->
 
 
+</body>
+<!-- END: Body-->
 
-<!-- Option 2: Separate Popper and Bootstrap JS -->
+</html>
 
-<!--
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-
--->

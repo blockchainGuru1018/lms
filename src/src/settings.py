@@ -40,6 +40,9 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'v2202004107229115572.luckysrv.de',
+    'local-cgito.net.localhost',
+    'ben.localhost',
+    'demo.localhost',
     *allowed_host,
     ]
 
@@ -49,7 +52,7 @@ SHARED_APPS = (
     'customer',  # you must list the app where your tenant model resides in
 
     # everything below here is optional
-   
+
     # 'fontawesome-free',
     "crispy_forms",
     "crispy_bootstrap5",
@@ -66,7 +69,7 @@ TENANT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # your tenant-specific apps
     'course',
     'lesson',
@@ -180,6 +183,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_my_proj"),
@@ -257,7 +261,7 @@ STATICFILES_FINDERS = [
     "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-   
+
 ]
 MULTITENANT_STATICFILES_DIRS = [
     os.path.join("absolute/path/to/your_project_dir", "tenants/%s/static"),
@@ -278,3 +282,7 @@ CELERY_BROKER_URL = env.str(
     'CELERY_BROKER_URL',
     default='redis://redis_db:6379/0')
 
+# celery stuff
+CELERY_BROKER_URL = env.str(
+    'CELERY_BROKER_URL',
+    default='redis://redis_db:6379/0')

@@ -1,4 +1,4 @@
-{% extends "shop.html" %}
+{% extends "shop_user.html" %}
 {%block extra_head%}
 <script src="//js.stripe.com/v3/" ></script>
 {%include 'shop/includes/product_image_css.html' with object=object %}
@@ -26,7 +26,7 @@
       <div class="card-body">
 
           <h4 class="mb-3">Payment succeeded</h4>
-            
+
           <p>
       We appreciate your business!
       If you have any questions, please email
@@ -39,8 +39,8 @@
     </div>
     <div class="col-md-5 offset-md-1">
         {%include 'shop/includes/summary.html'%}
-        
-      
+
+
     </div>
   </div>
 </div>

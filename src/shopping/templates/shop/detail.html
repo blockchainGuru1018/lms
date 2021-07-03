@@ -1,4 +1,4 @@
-{% extends "shop.html" %}
+{% extends "shop_user.html" %}
 
 <!--Content-->
 {% block content %}
@@ -17,119 +17,139 @@
 }
 </style>
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="banner"></div>
+
+<div class="row justify-content-md-center pt-4">
+  <div class="col-md-10 col-sm-12">
     <div class="card">
-      <div class="card-body">
-        <h1 class="card-title">{{ object.title }}</h1>
-        <p class="card-text">{% autoescape off %}{{ object.description }}{% endautoescape %}</p>
+      <img class="card-img-top img-fluid" src="{{ object.img.url }}" alt="Card image cap">
+      <div class="card-header">
+        <h4 class="card-title">{{ object.title }}</h4>
       </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="card">
-  <div class="row">
-    <div class="col-md-6">
+      <div class="card-body">
+        <p class="card-text">
+          {% autoescape off %}{{ object.description }}{% endautoescape %}
+        </p>
+      </div>
       <div class="card-body">
 
-          <h4 class="mb-3">Adresse</h4>
-            {%if form_neu.errors%}
-            <div class="alert alert-danger">
-            {{form_neu.errors}}
+      <div class="row">
+
+        <div class="col-md-6">
+          <h4 class="card-title">Adresse</h4>
+          {%if form_neu.errors%}
+          <div class="alert alert-danger">
+          {{form_neu.errors}}
+          </div>
+          {%endif%}
+
+            <form class="form form-vertical" action="{% url 'shopping:shop_success' pk=object.pk %}" method="post">{% csrf_token %}
+            <div class="form-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="first-name-vertical">Vorname</label>
+                    {{ form_neu.vorname }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="lastName" class="form-label">Nachname</label>
+                    {{ form_neu.nachnahme }}
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="username" class="form-label">Unternehmensname</label>
+                      {{ form_neu.firma }}
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    {{ form_neu.email }}
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="address" class="form-label">Address</label>
+                    {{ form_neu.adresse }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="zip" class="form-label">PLZ</label>
+                    {{ form_neu.plz }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="address2" class="form-label">Stadt</label>
+                    {{ form_neu.stadt }}
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="address2" class="form-label">Land</label>
+                    {{ form_neu.land }}
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="address2" class="form-label">UID Nummer</label>
+                    {{ form_neu.tax_nr }}
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="address2" class="form-label">Telefonnummer</label>
+                    {{ form_neu.tel }}
+                  </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end">
+                  <input class="btn btn-primary mr-1" type="submit" value="Kaufen">
+                </div>
+              </div>
             </div>
-            {%endif%}
-          <form action="{% url 'shopping:shop_success' pk=object.pk %}" method="post">
-            {% csrf_token %}
-            <div class="row g-3">
-                <div class="col-sm-6">
-                  <label for="firstName" class="form-label">Vorname</label>
-                  {{ form_neu.vorname }}
-                </div>
-
-                <div class="col-sm-6">
-                  <label for="lastName" class="form-label">Nachname</label>
-                  {{ form_neu.nachnahme }}
-                </div>
-
-                <div class="col-12">
-                  <label for="username" class="form-label">Unternehmensname</label>
-                    {{ form_neu.firma }}
-                </div>
-
-                <div class="col-12">
-                  <label for="email" class="form-label">Email</label>
-                  {{ form_neu.email }}
-                </div>
-
-                <div class="col-6">
-                  <label for="address" class="form-label">Address</label>
-                  {{ form_neu.adresse }}
-                </div>
-
-                <div class="col-md-6">
-                  <label for="zip" class="form-label">PLZ</label>
-                  {{ form_neu.plz }}
-                </div>
-
-                <div class="col-6">
-                  <label for="address2" class="form-label">Stand</label>
-                  {{ form_neu.stadt }}
-                </div>
-                <div class="col-6">
-                  <label for="address2" class="form-label">Land</label>
-                  {{ form_neu.land }}
-                </div>
-
-                <div class="col-6">
-                  <label for="address2" class="form-label">Uid Nummer</label>
-                  {{ form_neu.tax_nr }}
-                </div>
-
-                <div class="col-6">
-                  <label for="address2" class="form-label">Telefonnummer</label>
-                  {{ form_neu.tel }}
-                </div>
-                <input class="btn btn-outline-secondary" type="submit" value="Speicheren">
-                
-              </form>
-
-
+          </form>
 
         </div>
+
+        <div class="col-md-6">
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">{{ object.title }}</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">{{ object.preis }} €</span>
+            </li>
+
+          <!--  <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Second product</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$8</span>
+            </li>-->
+
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (€)</span>
+              <strong></strong>
+            </li>
+          </ul>
+        </div>
+
       </div>
-    </div>
-    <div class="col-md-5 offset-md-1">
-      <div class="card-body">
-        <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">{{ object.title }}</h6>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">{{ object.preis }} €</span>
-          </li>
-
-        <!--  <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Second product</h6>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$8</span>
-          </li>-->
-
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (€)</span>
-            <strong></strong>
-          </li>
-        </ul>
 
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 

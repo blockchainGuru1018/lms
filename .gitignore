@@ -133,3 +133,4 @@ dmypy.json
 .pydevproject
 
 src/static_cdn/**
+**/.DS_Store

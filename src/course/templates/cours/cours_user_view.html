@@ -1,10 +1,45 @@
 {% extends "basic.html" %}
+{% load static %}
+
+
+{% block jspage %}
+<script src="{% static 'app-assets/js/scripts/pages/table-extended.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/popover/popover.js' %}"></script>
+
+<script type="text/javascript">
+  $(function () {
+  	$('[data-toggle="popover"]').popover();
+  
+  
+	$('.btn-save-lesson').on('click', function(e){
+		const tr = $(this).closest('tr');
+		const form = $('form[name="form-lesson"]');
+		tr.find("input").each(function(){
+			const i = $(this);
+			const v = $(this).val();
+			
+			const name = i.attr('name');
+			form.find('input[name="' + name + '"]').val(v);
+		    
+		});
+		console.log('for data:', form.serialize());
+		form.submit();
+	});
+  
+})
+</script>
+
+{% endblock %}
+
+{% block csspage %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css-rtl/pages/page-user-profile.css' %}">
+{% endblock %}
 
 {% block content %}
 
+    <section class="page-user-profile">
 
-
-    <div class="col-md-12">
+    <div class="content-header row">
 
       {% if messages %}
         <div class="alert alert-success" role="alert">
@@ -14,108 +49,155 @@
         </div>
       {% endif %}
 
-      <div class="card">
-        <img src="{{ course.img.url }}" class="card-img-top" style="height: 320;">
-        <div class="card-body">
-          <h5 class="card-title">{{ course.name }}</h5>
-          <p>{% if course.descriptione == True %} {% else %} {{ course.description|truncatewords:30 }} {% endif %}</p>
-          <a href="{% url 'course:course_update' course.id %}" class="btn btn-light glow">{{ course.name }} edit</a>
-          <a href="{% url 'course:course_deletet' course.id %}" class="btn btn-danger glow">{{ course.name }} Delete</a>
-        </div>
-        <div class="card-footer text-muted">
-          <small>Erstellt von: {{ course.owner.full_name }} | Erstellt am: {{ course.update }}</small>
-        </div>
-      </div>
-
-      <div class="mt-n2"></div>
-
-      <div class="card">
-        <div class="card-body">
-
-
-          <form method="post" style="margin-top: 3px;" class="row row-cols-lg-auto g-3 align-items-center">{% csrf_token %}
-            <div class="col-12">
-                {{ categoryform.titel }}
-              </div>
-
-
-            <div class="col-12">
-              {{ categoryform.order }}
-            </div>
-
-            <div class="col-12">
-              {{ categoryform.description }}
-
-            </div>
-              <span id="div"></span>
-
-            <div class="col-12">
-              <input type=hidden name="course" value="{{ course.id }}">
-              <input class="save_content_btn btn btn-primary glow" name="categoryform" type="Submit" value="{{ btn_title }}"/>
-            </div>
-          </form>
-
-        </div>
-      </div>
-
-
-      <div class="mt-n1"></div>
-
-      <div class="card">
-        <div class="card-body card-body-padding">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Reinfolge</th>
-                <th scope="col">Öffentlich</th>
-                <th style="float: right;">Barbeiten</th>
-              </tr>
-            </thead>
-
-          {% for course in course.category_set.all %}
-
-              <tbody>
-                <tr class="table-secondary">
-                  <td>
-                    {{ course.titel }} | Order:{{ course.order }}<br>
-                    <small>{{course.description|truncatewords:8}}</small>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td><a href="{% url 'course:category_deletet' course.id %}"><i style="float: right;" class="bx fas fa-trash-alt"></i></a> <a href="{% url 'course:category_update' course.id %}"><i style="float: right; margin-right: 30px;" class="bx fas fa-edit"></i></a></td>
-                </tr>
-                {% for category in course.lesson_set.all %}
-                <tr>
-                  <td>{{ category.name }}</td>
-                  <td>{{ category.order }}</td>
-                  <td>{% if category.is_active == True %} <span class="text-success">ist aktive</span> {% else %} <span class="text-danger">ist daktiviert</span>{% endif %}</td>
-                  <td><a href="{% url 'lesson:lesson_detail' category.id %}"><i style="float: right;" class="bx far fa-eye"></i></a> <a href="{% url 'lesson:lesson_update' category.id %}"><i style="float:right; margin-right: 30px;" class="bx fas fa-edit"></i></a></td>
-                </tr>
-                {% endfor %}
-                <tr>
-                <form method="post">{% csrf_token %}
-                  <td>{{ lessonform.name }}</td>
-                  <td>{{ lessonform.order }}</td>
-                  <td>{{ lessonform.link_url }}</td>
-                  <td><input class="save_content_btn btn btn-primary" name="lessonform" type="Submit" value="{{ btn_title_2 }}"/></td>
-                  <input type=hidden name="category" value="{{ course.id }}">
-                </form>
-                </tr>
-              </tbody>
-
-          {% endfor %}
-          </table>
-        </div><!--card body ./-->
-      </div><!--card ./-->
-
     </div>
 
+    <!-- user profile heading section start -->
+    <div class="card">
+        <div class="user-profile-images">
+            <!-- user timeline image -->
+            <img src="{{ course.img.url }}" class="img-fluid rounded-top user-timeline-image" alt="user timeline image" style="max-height:350px; width:100%;">
+        </div>
+        <!-- user profile nav tabs start -->
+        <div class="card-body px-30">
+            <a href="{% url 'course:course_update' course.id %}" type="button" class="btn btn-light-primary btn-icon mr-1 mb-1"><i class="bx bx-pencil"></i> Bearbeiten</a>
+            <a href="{% url 'course:course_deletet' course.id %}" type="button" class="btn btn-light-danger mr-1 mb-1"><i class="bx bx-trash-alt"></i> Danger</a>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-icon btn-outline-primary mr-1 mb-1" data-toggle="popover"
+          data-content="Erstellt von: {{ course.owner.full_name }} | Erstellt am: {{ course.update }}"
+          data-trigger="hover" data-original-title="" title="">
+                <i class="bx bxs-info-circle"></i>
+          </button>
+        </div>
+    </div>
+    <!-- user profile heading section ends -->
 
 
 
+    <!-- Basic multiple Column Form section start -->
+                    <section id="multiple-column-form">
+                        <div class="row match-height">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 style="margin-bottom:30px;" class="card-title">Kategorie</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form" method=post>{% csrf_token %}
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                            {{ categoryform.titel }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                            {{ categoryform.order }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-label-group">
+                                                          {{ categoryform.description }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex justify-content-end">
+                                                      <input type=hidden name="course" value="{{ course.id }}">
+                                                      <input class="save_content_btn btn btn-primary mr-1" name="categoryform" type="Submit" value="Katerorie Erstellen"/>
 
+                                                        <button type="reset" class="btn btn-light-secondary">Reset</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Basic multiple Column Form section end -->
 
+                    <!-- table Marketing campaigns start -->
+                                    <section id="table-Marketing">
+                                        <div class="card">
+                                          <!--  <div class="card-header">
+                                                <h5 class="card-title">Marketing campaigns</h5>
+                                                <div class="heading-elements">
+                                                    <ul class="list-inline">
+                                                        <li><span class="badge badge-pill badge-light-success">42 ACTIVE</span></li>
+                                                        <li><i class="bx bx-dots-vertical-rounded font-medium-3 align-middle"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>-->
+                                            <div class="table-responsive">
+                                                <!-- table start -->
+                                                <table id="table-marketing-campaigns" class="table mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Lektions Bild</th>
+                                                            <th>Beschreibung</th>
+                                                            <th>Reinfolge</th>
+                                                            <th>status</th>
+                                                            <th>Time</th>
+                                                            <th>action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {% for course in course.category_set.all %}
+                                                    <tbody>
+                                                        <tr class="group">
+                                                            <td colspan="5">{{ course.titel }}</td>
+                                                            <td>
+                                                              <a href="{% url 'course:category_deletet' course.id %}"><i class="bx bx-trash-alt"></i></a>
+                                                              <a href="{% url 'course:category_update' course.id %}"><i class="bx bx-edit"></i></a></td>
+                                                        </tr>
+                                                        {% for category in course.lesson_set.all %}
+                                                        <tr>
+                                                            <td class="text-bold-600"><img class="rounded-circle mr-1" src="{% static 'app-assets/images/cards/1.png' %}" alt="card"></td>
+                                                            <td class="text-bold-600"><i class="bx bx-trending-up text-success align-middle mr-50"></i><span>{{ category.name }}</span>
+                                                            </td>
+                                                            <td class="text-bold-600">{{ category.order }}</td>
+                                                            <td>{% if category.is_active == True %} <span class="text-success">ist aktive</span> {% else %} <span class="text-danger">ist daktiviert</span>{% endif %}</td>
+                                                            <td>{{ category.time }}</td>
+                                                            <td>
+                                                                <div class="dropdown">
+                                                                    <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                        <a class="dropdown-item" href="{% url 'lesson:lesson_update' category.id %}"><i class="bx bx-edit-alt mr-1"></i> edit</a>
+                                                                        <a class="dropdown-item" href="{% url 'lesson:lesson_deletet' category.id %};"><i class="bx bx-trash mr-1"></i> delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        
+                                                        <tr id="{{ course.id }}">
+                                                        
+                                                          <td>{{ lessonform.name }}</td>
+                                                          <td>{{ lessonform.order }}</td>
+                                                          <td>{{ lessonform.time }}</td>
+                                                          <td colspan="1">{{ lessonform.link_url }}</td>
+                                                          <td><input class="save_content_btn btn btn-primary btn-save-lesson" name="lessonform" type="Submit" value="Lektion hinzufühgen"/></td>
+                                                          
+                                                        	<input type=hidden name="category" value="{{course.pk}}">
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                    {% endfor %}
+                                                </table>
+                                                <form name="form-lesson" method="post">
+                                                {% csrf_token %}
+                                                <input type=hidden name="name" value="">
+                                                <input type=hidden name="order" value="">
+                                                <input type=hidden name="time" value="">
+                                                <input type=hidden name="link_url" value="">
+                                                <input type=hidden name="lessonform" value="1">
+                                                <input type=hidden name="category" value="">
+                                                </form>
+                                                <!-- table ends -->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <!-- table Marketing campaigns ends -->
 
 
 {% endblock %}

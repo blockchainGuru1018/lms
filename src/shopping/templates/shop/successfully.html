@@ -1,9 +1,10 @@
-{% extends "shop.html" %}
-{%block extra_head%}
+{% extends "shop_user.html" %}
+{%block csspage%}
 <script src="//js.stripe.com/v3/" ></script>
 {%include 'shop/includes/product_image_css.html' with object=object %}
 
 {%endblock%}
+
 <!--Content-->
 {% block content %}
 
@@ -26,8 +27,8 @@
       <div class="card-body">
 
           <h4 class="mb-3">Adresse</h4>
-            
-          
+
+
             <div class="row g-3">
                 <div class="col-sm-6">
                   <label for="firstName" class="form-label">Vorname</label>
@@ -77,9 +78,9 @@
                   <label for="address2" class="form-label">Telefonnummer</label>
                   {{ object.tel }}
                 </div>
-              
+
                 <button class="btn btn-outline-secondary" id="checkout-button">Checkout</button>
-                
+
     <script type="text/javascript">
       // Create an instance of the Stripe object with your publishable API key
       var stripe = Stripe('{{settings.STRIPE_PUBLIC_KEY}}');
